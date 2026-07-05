@@ -76,7 +76,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
       <header className="fixed left-0 top-0 z-50 w-full border-b border-black/10 bg-white/55 text-neutral-950 backdrop-blur-md">
-<div className="flex h-20 w-full items-center justify-between px-[95px] md:px-[95px]">
+<div className="flex h-20 w-full items-center justify-start px-6 md:justify-between md:px-[95px]">
 <a
   href="#"
   className="block transition-opacity duration-500 hover:opacity-60"
@@ -123,7 +123,7 @@ export default function Home() {
     className="hidden object-cover object-center hero-slow-zoom md:block"
   />
 </>
-<div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center translate-x-4">
+<div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center transition-all md:flex">
   <img
   src="/images/logo-2.2.svg"
   alt=""
