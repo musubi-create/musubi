@@ -111,11 +111,11 @@ export default function Home() {
           priority
           className="object-cover object-center hero-slow-zoom"
         />
-<div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+<div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center translate-x-4">
   <img
     src="/images/logo-2.2.svg"
     alt=""
-    className="w-[40vw] min-w-[520px] max-w-[760px] opacity-15 transition-all duration-700 drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+    className="w-[60vw] min-w-[600px] max-w-[850px] opacity-30 transition-all duration-800 drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
   />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
@@ -139,16 +139,22 @@ export default function Home() {
   <br />
   最後に人を動かすのは
   <br />
-  <span className="mt-10 block text-[1.15em] font-semibold tracking-[0.01em]">
+  <span className="mt-0 block text-[1.15em] font-semibold tracking-[0.01em]">
     人の声。
   </span>
 </h2>
 
-<p className="mt-14 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600">
-  AIが情報を整理し、効率を極限まで高める時代。だからこそ、最後に人を動かすのは、人の声であり、感情であり、相手を想う対話だと私たちは信じています。営業とは、ただ商品を届ける仕事ではありません。まだ出会っていない企業と企業、人と人の可能性をつなぐ仕事です。
+<p className="mt-8 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600">
+AIが情報を整理し、効率を極限まで高める時代。
+<p className="mt-0 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>
+だからこそ、私たちは台本を読むだけの架電はしません。
+最後に人を動かすのは、声であり、感情であり、相手を想う対話だと信じています。
+営業とは、商品を届けることではなく、まだ出会っていない企業と企業、人と人をつなぎ、新しい可能性を生み出すこと。
 <p className="mt-5 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>  
-  私たちは、AIの力で営業の無駄を減らし、人だからこそ生み出せる温度あるコミュニケーションに
-集中することで、新しい出会いと事業成長のきっかけを創り続けます。
+私たちは、AIの力で営業の無駄を減らし、人だからこそ生み出せる温度あるコミュニケーションに集中します。
+<p className="mt-0 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>
+その一つひとつの対話が、新しい出会いを生み、事業の成長へとつながっていく。
+それが、MUSUBIのインサイドセールスです。
 </p>
         </div>
 
@@ -170,17 +176,17 @@ export default function Home() {
 <section id="workflow" className="bg-white px-8 py-32 md:px-12 md:py-44">
   <div className="mx-auto max-w-7xl">
     <Reveal>
-      <div className="mb-24 grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
+      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
         <div>
           <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">
             WORK FLOW
           </p>
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.08em] md:text-[60px]">
+          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.1em] md:text-[56px]">
   営業成果までの流れ
 </h2>
         </div>
 
-        <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
+        <p className="ml-3 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
           課題の整理から、ターゲット設計、実行、改善提案まで。
           一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
         </p>
@@ -190,7 +196,7 @@ export default function Home() {
     <div className="border-t border-black/10">
       {workflow.map((item, index) => (
         <Reveal key={item.number} delay={(index + 1) as 1 | 2 | 3}>
-          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1.4fr] md:items-start">
+          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start">
   <p className="font-serif text-3xl tracking-[0.12em] text-neutral-300 transition-colors duration-700 group-hover:text-neutral-900">
     {item.number}
   </p>
@@ -199,7 +205,7 @@ export default function Home() {
     {item.title}
   </h3>
 
-  <p className="max-w-[620px] text-sm leading-[2.2] tracking-[0.055em] text-neutral-600 transition-colors duration-700 group-hover:text-neutral-800">
+  <p className="max-w-[620px] text-sm leading-[2.2] tracking-[0.1em] text-neutral-600 transition-colors duration-700 group-hover:text-neutral-800">
     {item.text}
   </p>
 </div>
@@ -214,7 +220,7 @@ export default function Home() {
       <div className="grid gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
         <div>
           <p className="mb-14 text-xs tracking-[0.65em] text-white/35">SERVICES</p>
-          <h2 className="text-[40px] font-light leading-[1.55] tracking-[0.12em] md:text-[58px]">
+          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.12em] md:text-[56px]">
             事業内容
           </h2>
         </div>
