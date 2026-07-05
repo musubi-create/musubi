@@ -234,31 +234,36 @@ export default function Home() {
     </div>
   </div>
 </section>
-     <section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-12 md:py-48">
+<section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-12 md:py-48">
   <div className="mx-auto max-w-7xl">
     <Reveal>
-      <div className="grid gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
         <div>
-          <p className="mb-14 text-xs tracking-[0.65em] text-white/35">SERVICES</p>
+          <p className="mb-12 text-xs tracking-[0.65em] text-white/35">
+            SERVICES
+          </p>
+
           <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.12em] md:text-[56px]">
             事業内容
           </h2>
         </div>
 
-        <p className="max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-white/58">
-          AIを徹底活用したインサイドセールス支援。
-          架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
-          リスト作成・訴求設計・スクリプト作成・架電実行・
-          結果分析・改善提案までを一気通貫でサポートします。
-          効率と成果、その両方を追求する営業パートナーです。
-        </p>
+        <div className="flex items-end">
+          <p className="ml-9 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-white/58">
+            AIを徹底活用したインサイドセールス支援。
+            架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
+            リスト作成・訴求設計・スクリプト作成・架電実行・
+            結果分析・改善提案までを一気通貫でサポートします。
+            効率と成果、その両方を追求する営業パートナーです。
+          </p>
+        </div>
       </div>
     </Reveal>
 
     <div className="mt-28 border-t border-white/15">
       {services.map((service, index) => (
         <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
-          <article className="group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.65fr_1.4fr]">
+          <article className="group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr]">
             <p className="font-serif text-4xl tracking-[0.12em] text-white/30 transition-colors duration-700 group-hover:text-white/70">
               {service.number}
             </p>
@@ -363,7 +368,7 @@ export default function Home() {
   <img
     src="/images/logo-1.2.svg"
     alt="株式会社 糸喜-MUSUBI"
-    className="w-[360px] h-auto -ml-5"
+    className="mx-auto mt-16 w-[72vw] max-w-[340px] md:mt-20 md:w-[420px] md:max-w-none"
   />
 </div>
       </div>
