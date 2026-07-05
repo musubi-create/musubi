@@ -82,11 +82,11 @@ export default function Home() {
   className="block transition-opacity duration-500 hover:opacity-60"
   aria-label="MUSUBI"
 >
-  <img
-    src="/images/logo-2.2.svg"
-    alt="MUSUBI"
-    className="h-33 w-auto"
-  />
+<img
+  src="/images/logo-2.2.svg"
+  alt="MUSUBI"
+  className="h-16 w-auto md:h-33"
+/>
 </a>
 
   <nav className="hidden items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-black md:flex">
@@ -125,10 +125,10 @@ export default function Home() {
 </>
 <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center translate-x-4">
   <img
-    src="/images/logo-2.2.svg"
-    alt=""
-className="w-[82vw] max-w-[360px] opacity-20 transition-all duration-800 drop-shadow-[0_0_40px_rgba(255,255,255,0.75)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
-  />
+  src="/images/logo-2.2.svg"
+  alt=""
+  className="w-[58vw] max-w-[250px] opacity-18 transition-all duration-800 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+/>
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
           <span className="text-[13px] font-semibold tracking-[0.45em] text-neutral-900 drop-shadow-[0_1px_8px_rgba(255,255,255,.9)]">
