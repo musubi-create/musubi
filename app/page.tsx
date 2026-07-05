@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Reveal from "./components/Reveal";
 const navLinks = [
-  { label: "思想", href: "#vision" },
+  { label: "ビジョン", href: "#vision" },
   { label: "サービス", href: "#services" },
+  { label: "お客様の声", href: "#voice" },
   { label: "会社概要", href: "#company" },
   { label: "お問い合わせ", href: "#contact" },
 ];
@@ -75,7 +76,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
       <header className="fixed left-0 top-0 z-50 w-full border-b border-black/10 bg-white/55 text-neutral-950 backdrop-blur-md">
-<div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8 md:px-12">
+<div className="flex h-20 w-full items-center justify-between px-[95px] md:px-[95px]">
 <a
   href="#"
   className="block transition-opacity duration-500 hover:opacity-60"
@@ -145,12 +146,15 @@ export default function Home() {
 
 <p className="mt-14 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600">
   AIが情報を整理し、効率を極限まで高める時代。だからこそ、最後に人を動かすのは、人の声であり、感情であり、相手を想う対話だと私たちは信じています。営業とは、ただ商品を届ける仕事ではありません。まだ出会っていない企業と企業、人と人の可能性をつなぐ仕事です。
+<p className="mt-5 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>  
+  私たちは、AIの力で営業の無駄を減らし、人だからこそ生み出せる温度あるコミュニケーションに
+集中することで、新しい出会いと事業成長のきっかけを創り続けます。
 </p>
         </div>
 
         <div className="space-y-12 border-l border-black/10 pl-10">
           {values.map((item) => (
-            <div key={item.number}>
+            <div key={item.number} className="pt-3">
               <p className="font-serif text-2xl tracking-[0.12em] text-neutral-400">{item.number}</p>
               <h3 className="mt-4 text-xl font-light tracking-[0.18em]">{item.title}</h3>
               <p className="mt-4 text-sm leading-[2] tracking-[0.05em] text-neutral-600">
@@ -246,7 +250,80 @@ export default function Home() {
     </div>
   </div>
 </section>
+      <section id="voice" className="bg-[#f7f6f3] px-8 py-32 text-neutral-950 md:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-16 text-center">
+            <p className="mb-5 text-xs font-semibold tracking-[0.45em] text-neutral-400">
+              VOICE / CASE
+            </p>
+            <h2 className="text-[30px] font-light tracking-[0.1em] md:text-[42px]">
+              お客様の声・導入事例
+            </h2>
+          </div>
 
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                number: "01",
+                category: "SaaS・従業員50名",
+                result: "アポ獲得率 2.6倍",
+                title:
+                  "ターゲット再設計とトーク改善により、停滞していたアポ数を回復。",
+                comment:
+                  "数字だけでなく、断られた理由まで共有してくれるのが心強い。",
+              },
+              {
+                number: "02",
+                category: "人材・従業員200名",
+                result: "エンプラ商談 月8件",
+                title:
+                  "決裁者への直アプローチで、接点のなかった大手企業の商談を獲得。",
+                comment:
+                  "自社では届かなかった層に、丁寧に接点を作ってもらえた。",
+              },
+              {
+                number: "03",
+                category: "製造・従業員1,000名",
+                result: "稼働準備 2週間",
+                title:
+                  "IS組織がなくても、短期で安定したアポイント供給体制を構築。",
+                comment:
+                  "眠っていたリストから商談が生まれたのは驚きだった。",
+              },
+            ].map((item) => (
+              <article
+                key={item.number}
+                className="group relative min-h-[420px] rounded-2xl border border-black/10 bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] md:p-10"
+              >
+                <div className="mb-10 flex items-start justify-between">
+                  <p className="text-[11px] font-semibold tracking-[0.35em] text-neutral-400">
+                    CASE {item.number}
+                  </p>
+                  <p className="text-[56px] font-light leading-none text-neutral-200 transition-colors duration-500 group-hover:text-neutral-800">
+                    {item.number}
+                  </p>
+                </div>
+
+                <p className="mb-4 text-xs tracking-[0.16em] text-neutral-400">
+                  {item.category}
+                </p>
+
+                <p className="mb-6 inline-block border-b border-black pb-2 text-sm font-semibold tracking-[0.12em] text-neutral-950">
+                  {item.result}
+                </p>
+
+                <h3 className="mb-8 text-[19px] font-light leading-[1.9] tracking-[0.04em] text-neutral-950">
+                  {item.title}
+                </h3>
+
+                <p className="border-t border-black/10 pt-6 text-sm leading-[2.2] tracking-[0.04em] text-neutral-500">
+                  「{item.comment}」
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 <section id="company" className="bg-white px-8 py-32 md:px-12 md:py-44">
   <div className="mx-auto max-w-7xl">
     <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">COMPANY</p>
@@ -295,8 +372,7 @@ export default function Home() {
 </section>
 
      <section id="contact" className="relative overflow-hidden bg-black px-8 py-28 text-white md:px-12 md:py-36">
-  <div className="pointer-events-none absolute right-10 top-16 h-40 w-40 border border-white/10 md:right-24 md:h-56 md:w-56" />
-
+  
   <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
     <div>
       <p className="mb-8 text-xs font-semibold tracking-[0.55em] text-white/35">CONTACT</p>
@@ -308,7 +384,7 @@ export default function Home() {
       </h2>
 
       <p className="mt-8 max-w-xl text-sm leading-[2.2] tracking-[0.06em] text-white/60">
-        御社の営業課題に合わせて、最適な進め方をご提案します。
+        貴社の営業課題に合わせて、最適な進め方をご提案します。
         <br />
         まずはお気軽にご相談ください。
       </p>
@@ -399,9 +475,15 @@ export default function Home() {
           <textarea className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="ご相談内容をご記入ください" />
         </label>
 
-        <button type="button" className="mt-2 bg-black px-8 py-4 text-xs tracking-[0.2em] text-white">
-          送信する →
-        </button>
+        <button
+  type="submit"
+  className="group mt-8 inline-flex items-center gap-3 bg-black px-8 py-4 text-[12px] font-semibold tracking-[0.18em] text-white transition-all duration-500 hover:-translate-y-1 hover:bg-neutral-800 hover:shadow-[0_18px_35px_rgba(0,0,0,0.25)]"
+>
+  <span>送信する</span>
+  <span className="relative inline-block h-[1px] w-6 bg-white transition-all duration-500 group-hover:w-8">
+    <span className="absolute -right-[1px] -top-[3px] h-2 w-2 rotate-45 border-r border-t border-white" />
+  </span>
+</button>
       </div>
     </form>
   </div>
@@ -410,9 +492,10 @@ export default function Home() {
   <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
     <div>
       <p className="text-xs font-semibold tracking-[0.6em] text-white/80">MUSUBI</p>
-      <p className="mt-6 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
-        電話の先にいる「人」と向き合い、インサイドセールス。
-        人と人を結び、商談につなぎます。
+      <p className="mt-5 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
+        電話の先にいる「人」と向き合うインサイドセールス。
+        <p className="mt-2 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50"></p>
+        人と人をむすび、商談につなぎます。
       </p>
     </div>
 
@@ -445,7 +528,7 @@ export default function Home() {
 
   <div className="mx-auto flex max-w-7xl flex-col gap-4 pt-8 text-[10px] tracking-[0.12em] text-white/35 md:flex-row md:items-center md:justify-between">
     <p>東京都 / インサイドセールス・テレアポ代行</p>
-    <p>© 株式会社 糸喜 MUSUBI</p>
+    <p>© 株式会社 糸喜-MUSUBI</p>
   </div>
 </footer>
     </main>
