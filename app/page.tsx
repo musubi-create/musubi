@@ -144,18 +144,26 @@ export default function Home() {
   </span>
 </h2>
 
-<p className="mt-8 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600">
-AIが情報を整理し、効率を極限まで高める時代。
-<p className="mt-0 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>
-だからこそ、私たちは台本を読むだけの架電はしません。
-最後に人を動かすのは、声であり、感情であり、相手を想う対話だと信じています。
-営業とは、商品を届けることではなく、まだ出会っていない企業と企業、人と人をつなぎ、新しい可能性を生み出すこと。
-<p className="mt-5 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>  
-私たちは、AIの力で営業の無駄を減らし、人だからこそ生み出せる温度あるコミュニケーションに集中します。
-<p className="mt-0 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600"></p>
-その一つひとつの対話が、新しい出会いを生み、事業の成長へとつながっていく。
-それが、MUSUBIのインサイドセールスです。
-</p>
+<div className="mt-6 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600">
+  <p>
+    AIが情報を整理し、効率を極限まで高める時代。
+  </p>
+
+  <p className="mt-0">
+    だからこそ、私たちは台本を読むだけの架電はしません。
+    最後に人を動かすのは、声であり、感情であり、相手を想う対話だと信じています。
+    営業とは、商品を届けることではなく、まだ出会っていない企業と企業、人と人をつなぎ、新しい可能性を生み出すこと。
+  </p>
+
+  <p className="mt-5">
+    私たちは、AIの力で営業の無駄を減らし、人だからこそ生み出せる温度あるコミュニケーションに集中します。
+  </p>
+
+  <p className="mt-0">
+    その一つひとつの対話が、新しい出会いを生み、事業の成長へとつながっていく。
+    それが、MUSUBIのインサイドセールスです。
+  </p>
+</div>
         </div>
 
         <div className="space-y-12 border-l border-black/10 pl-10">
