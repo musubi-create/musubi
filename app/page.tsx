@@ -368,7 +368,7 @@ export default function Home() {
   <img
     src="/images/logo-1.2.svg"
     alt="株式会社 糸喜-MUSUBI"
-    className="mx-auto mt-16 w-[72vw] max-w-[340px] md:mt-20 md:w-[420px] md:max-w-none"
+    className="mx-auto mt-8 w-[72vw] max-w-[340px] md:mt-20 md:w-[420px] md:max-w-none"
   />
 </div>
       </div>
