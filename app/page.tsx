@@ -104,18 +104,18 @@ export default function Home() {
 </header>
 
       <section className="relative h-screen min-h-[720px] overflow-hidden">
-        <Image
-          src="/images/hero.png"
-          alt="MUSUBI Hero"
-          fill
-          priority
-          className="object-cover object-center hero-slow-zoom"
-        />
+       <Image
+  src="/images/hero.png"
+  alt="MUSUBI Hero"
+  fill
+  priority
+  className="object-cover object-[43%_center] md:object-center hero-slow-zoom"
+/>
 <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center translate-x-4">
   <img
     src="/images/logo-2.2.svg"
     alt=""
-    className="w-[60vw] min-w-[600px] max-w-[850px] opacity-30 transition-all duration-800 drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+className="w-[82vw] max-w-[360px] opacity-20 transition-all duration-800 drop-shadow-[0_0_40px_rgba(255,255,255,0.75)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
   />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
@@ -506,11 +506,10 @@ export default function Home() {
   <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
     <div>
       <p className="text-xs font-semibold tracking-[0.6em] text-white/80">MUSUBI</p>
-      <p className="mt-5 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
-        電話の先にいる「人」と向き合うインサイドセールス。
-        <p className="mt-2 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50"></p>
-        人と人をむすび、商談につなぎます。
-      </p>
+      <div className="mt-5 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
+  <p>電話の先にいる「人」と向き合うインサイドセールス。</p>
+  <p className="mt-2">人と人をむすび、商談につなぎます。</p>
+</div>
     </div>
 
     <div>
