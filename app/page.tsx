@@ -104,13 +104,25 @@ export default function Home() {
 </header>
 
       <section className="relative h-screen min-h-[720px] overflow-hidden">
-       <Image
-  src="/images/hero.png"
-  alt="MUSUBI Hero"
-  fill
-  priority
-  className="object-cover object-[43%_center] md:object-center hero-slow-zoom"
-/>
+<>
+  {/* スマホ用 */}
+  <Image
+    src="/images/hero-mobile.png"
+    alt="MUSUBI Hero"
+    fill
+    priority
+    className="block object-cover md:hidden"
+  />
+
+  {/* PC・タブレット用 */}
+  <Image
+    src="/images/hero.png"
+    alt="MUSUBI Hero"
+    fill
+    priority
+    className="hidden object-cover object-center hero-slow-zoom md:block"
+  />
+</>
 <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center translate-x-4">
   <img
     src="/images/logo-2.2.svg"
