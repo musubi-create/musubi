@@ -1,19 +1,24 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 type RevealProps = {
-  children: React.ReactNode;
-  className?: string;
-  delay?: 0 | 1 | 2 | 3;
+  children: ReactNode;
+  delay?: 1 | 2 | 3;
 };
 
-export default function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+export default function Reveal({ children, delay }: RevealProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  const delayClass =
+    delay === 1
+      ? "delay-100"
+      : delay === 2
+        ? "delay-200"
+        : delay === 3
+          ? "delay-300"
+          : "";
 
   useEffect(() => {
     const element = ref.current;
@@ -22,28 +27,27 @@ export default function Reveal({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          element.classList.add("visible");
-          observer.unobserve(element);
+          setVisible(true);
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.18 }
     );
 
     observer.observe(element);
+
     return () => observer.disconnect();
   }, []);
 
-  const delayClass =
-    delay === 1
-      ? "reveal-delay-1"
-      : delay === 2
-        ? "reveal-delay-2"
-        : delay === 3
-          ? "reveal-delay-3"
-          : "";
-
   return (
-    <div ref={ref} className={`reveal ${delayClass} ${className}`}>
+    <div
+      ref={ref}
+      className={`transform-gpu will-change-transform transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${delayClass}
+        visible
+  ? "translate-y-0 opacity-100 blur-0"
+  : "translate-y-8 opacity-0 blur-[2px]"
+      }`}
+    >
       {children}
     </div>
   );

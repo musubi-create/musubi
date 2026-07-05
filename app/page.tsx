@@ -1,370 +1,453 @@
-import Reveal from "./components/Reveal";
+"use client";
 
+import Image from "next/image";
+import Reveal from "./components/Reveal";
 const navLinks = [
-  { href: "#services", label: "サービス" },
-  { href: "#about", label: "会社概要" },
-  { href: "#contact", label: "お問い合わせ" },
+  { label: "思想", href: "#vision" },
+  { label: "サービス", href: "#services" },
+  { label: "会社概要", href: "#company" },
+  { label: "お問い合わせ", href: "#contact" },
 ];
 
 const services = [
   {
     number: "01",
     title: "営業支援",
-    description:
-      "営業戦略の策定からフィールド支援まで、目標達成に向けた実行支援を提供します。商談プロセスの可視化と改善により、チーム全体の生産性向上を実現します。",
+    text: "新規開拓から商談創出まで、事業成長に必要な営業活動を設計し、実行まで伴走します。",
   },
   {
     number: "02",
     title: "インサイドセールス",
-    description:
-      "リード獲得から商談創出まで、インサイドセールスの仕組みづくりと運用を支援します。スクリプト設計、KPI管理、人材育成まで一貫してサポートします。",
+    text: "顧客との最初の接点を丁寧に設計し、見込み顧客との関係構築を支援します。",
   },
   {
     number: "03",
-    title: "事業成長支援",
-    description:
-      "データ分析とプロセス改善により、持続的な売上成長の基盤を構築します。市場機会の特定から実行計画の策定まで、成長フェーズに応じた支援を行います。",
+    title: "DX・SaaS支援",
+    text: "SaaSやデジタルツールの導入・活用を通じて、営業組織の生産性向上を支えます。",
+  },
+];
+const values = [
+  {
+    number: "01",
+    title: "誠実",
+    text: "事実を正直に伝え、できることとできないことを明確に。長く続く信頼関係を第一に考えます。",
+  },
+  {
+    number: "02",
+    title: "伴走",
+    text: "立ち上げから改善まで、御社のチームの一員として並走し、成果に向けて一緒に考え抜きます。",
+  },
+  {
+    number: "03",
+    title: "むすび",
+    text: "人と人、企業と企業をつなぐ結節点として、その先の事業成長まで見据えて関わります。",
+  },
+];
+const workflow = [
+  {
+    number: "01",
+    title: "ヒアリング",
+    text: "現状の営業課題・目標・ターゲットを丁寧に整理します。",
+  },
+  {
+    number: "02",
+    title: "ターゲット設計",
+    text: "業種・企業規模・決裁者など最適なアプローチ先を設計します。",
+  },
+  {
+    number: "03",
+    title: "リスト・スクリプト設計",
+    text: "成果につながるリストとトーク設計を行います。",
+  },
+  {
+    number: "04",
+    title: "インサイドセールス",
+    text: "架電・改善を繰り返しながら商談創出を最大化します。",
+  },
+  {
+    number: "05",
+    title: "分析・改善提案",
+    text: "結果を可視化し、次につながる改善策をご提案します。",
   },
 ];
 
 export default function Home() {
   return (
-    <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-8">
-          <a
-            href="#"
-            className="text-sm font-semibold tracking-[0.35em] text-white transition-opacity hover:opacity-70"
-          >
-            MUSUBI
-          </a>
-          <nav className="hidden items-center gap-8 md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-xs tracking-widest text-white/70 transition-colors hover:text-white"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-          <a
-            href="#contact"
-            className="border border-white/30 px-4 py-2 text-xs tracking-widest text-white transition-all hover:border-white hover:bg-white hover:text-black"
-          >
-            相談する
-          </a>
+    <main className="min-h-screen bg-white text-neutral-950">
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-black/10 bg-white/55 text-neutral-950 backdrop-blur-md">
+<div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8 md:px-12">
+<a
+  href="#"
+  className="block transition-opacity duration-500 hover:opacity-60"
+  aria-label="MUSUBI"
+>
+  <img
+    src="/images/logo-2.2.svg"
+    alt="MUSUBI"
+    className="h-33 w-auto"
+  />
+</a>
+
+  <nav className="hidden items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-black md:flex">
+    {navLinks.map((link) => (
+      <a
+        key={link.href}
+        href={link.href}
+        className="transition-all duration-500 hover:text-black hover:opacity-70"
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</div>
+</header>
+
+      <section className="relative h-screen min-h-[720px] overflow-hidden">
+        <Image
+          src="/images/hero.png"
+          alt="MUSUBI Hero"
+          fill
+          priority
+          className="object-cover object-center hero-slow-zoom"
+        />
+<div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+  <img
+    src="/images/logo-2.2.svg"
+    alt=""
+    className="w-[40vw] min-w-[520px] max-w-[760px] opacity-15 transition-all duration-700 drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+  />
+</div>
+        <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
+          <span className="text-[13px] font-semibold tracking-[0.45em] text-neutral-900 drop-shadow-[0_1px_8px_rgba(255,255,255,.9)]">
+            SCROLL
+          </span>
+
+          <div className="mt-4 h-16 w-px bg-gradient-to-b from-neutral-900 to-transparent" />
         </div>
-      </header>
+      </section>
 
-      <main>
-        {/* Hero */}
-        <section className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-black px-6 pt-16 text-white lg:px-8">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-size-[64px_64px]"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full bg-white/5 blur-3xl"
-          />
+<section id="vision" className="bg-white px-8 py-32 md:px-12 md:py-44">
+  <Reveal>
+    <div className="mx-auto max-w-7xl">
+      <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">OUR VISION</p>
 
-          <div className="relative mx-auto w-full max-w-6xl">
-            <p
-              className="mb-6 text-xs tracking-[0.4em] text-white/50 opacity-0 animate-fade-in"
-              style={{ animationDelay: "0.2s", animationFillMode: "forwards" }}
-            >
-              BUSINESS GROWTH PARTNER
-            </p>
+      <div className="grid gap-24 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+        <div>
+          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.04em] md:text-[64px]">
+  AIが効率を極めるほど、
+  <br />
+  最後に人を動かすのは
+  <br />
+  <span className="mt-10 block text-[1.15em] font-semibold tracking-[0.01em]">
+    人の声。
+  </span>
+</h2>
 
-            <h1
-              className="text-5xl font-light tracking-[0.2em] opacity-0 animate-fade-up sm:text-7xl lg:text-8xl"
-              style={{ animationDelay: "0.35s", animationFillMode: "forwards" }}
-            >
-              MUSUBI
-            </h1>
+<p className="mt-14 max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-neutral-600">
+  AIが情報を整理し、効率を極限まで高める時代。だからこそ、最後に人を動かすのは、人の声であり、感情であり、相手を想う対話だと私たちは信じています。営業とは、ただ商品を届ける仕事ではありません。まだ出会っていない企業と企業、人と人の可能性をつなぐ仕事です。
+</p>
+        </div>
 
-            <div
-              className="mt-8 h-px w-16 origin-left bg-white/40 opacity-0 animate-line-grow"
-              style={{ animationDelay: "0.6s", animationFillMode: "forwards" }}
-            />
-
-            <p
-              className="mt-8 max-w-2xl text-base leading-relaxed text-white/75 opacity-0 animate-fade-up sm:text-lg lg:text-xl"
-              style={{ animationDelay: "0.75s", animationFillMode: "forwards" }}
-            >
-              営業支援・インサイドセールス・事業成長を支援するパートナー
-            </p>
-
-            <p
-              className="mt-4 max-w-xl text-sm leading-relaxed text-white/45 opacity-0 animate-fade-up sm:text-base"
-              style={{ animationDelay: "0.95s", animationFillMode: "forwards" }}
-            >
-              戦略と実行を結び、成果へと導く。
-              <br className="hidden sm:block" />
-              貴社の成長フェーズに合わせた、実践的な支援を提供します。
-            </p>
-
-            <div
-              className="mt-12 flex flex-col gap-4 opacity-0 animate-fade-up sm:flex-row sm:items-center"
-              style={{ animationDelay: "1.15s", animationFillMode: "forwards" }}
-            >
-              <a
-                href="#services"
-                className="inline-flex items-center justify-center bg-white px-8 py-4 text-xs tracking-widest text-black transition-all hover:bg-white/90"
-              >
-                サービスを見る
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center border border-white/30 px-8 py-4 text-xs tracking-widest text-white transition-all hover:border-white hover:bg-white/5"
-              >
-                お問い合わせ
-              </a>
-            </div>
-          </div>
-
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-            <a
-              href="#services"
-              aria-label="サービスセクションへスクロール"
-              className="flex flex-col items-center gap-2 text-white/40 transition-colors hover:text-white/70"
-            >
-              <span className="text-[10px] tracking-[0.3em]">SCROLL</span>
-              <span className="block h-8 w-px animate-pulse bg-white/30" />
-            </a>
-          </div>
-        </section>
-
-        {/* Services */}
-        <section id="services" className="bg-white px-6 py-24 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-6xl">
-            <Reveal>
-              <p className="text-xs tracking-[0.4em] text-neutral-400">
-                SERVICES
+        <div className="space-y-12 border-l border-black/10 pl-10">
+          {values.map((item) => (
+            <div key={item.number}>
+              <p className="font-serif text-2xl tracking-[0.12em] text-neutral-400">{item.number}</p>
+              <h3 className="mt-4 text-xl font-light tracking-[0.18em]">{item.title}</h3>
+              <p className="mt-4 text-sm leading-[2] tracking-[0.05em] text-neutral-600">
+                {item.text}
               </p>
-              <h2 className="mt-4 text-3xl font-light tracking-wider sm:text-4xl">
-                サービス
-              </h2>
-              <p className="mt-6 max-w-2xl text-sm leading-relaxed text-neutral-500 sm:text-base">
-                営業組織の立ち上げから既存チームの強化まで、
-                貴社の課題に合わせた支援メニューをご用意しています。
-              </p>
-            </Reveal>
-
-            <div className="mt-16 grid gap-px bg-neutral-200 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((service, index) => (
-                <Reveal key={service.title} delay={(index + 1) as 1 | 2 | 3}>
-                  <article className="group flex h-full flex-col bg-white p-8 transition-colors hover:bg-neutral-950 hover:text-white lg:p-10">
-                    <span className="font-mono text-xs tracking-widest text-neutral-300 transition-colors group-hover:text-white/40">
-                      {service.number}
-                    </span>
-                    <h3 className="mt-6 text-xl font-medium tracking-wide">
-                      {service.title}
-                    </h3>
-                    <p className="mt-4 flex-1 text-sm leading-relaxed text-neutral-500 transition-colors group-hover:text-white/70">
-                      {service.description}
-                    </p>
-                    <div className="mt-8 h-px w-8 bg-neutral-200 transition-all group-hover:w-16 group-hover:bg-white/40" />
-                  </article>
-                </Reveal>
-              ))}
             </div>
-          </div>
-        </section>
-
-        {/* About */}
-        <section id="about" className="bg-neutral-950 px-6 py-24 text-white lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-6xl">
-            <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-              <Reveal>
-                <p className="text-xs tracking-[0.4em] text-white/40">ABOUT</p>
-                <h2 className="mt-4 text-3xl font-light tracking-wider sm:text-4xl">
-                  会社概要
-                </h2>
-              </Reveal>
-
-              <div className="space-y-8">
-                <Reveal delay={1}>
-                  <p className="text-lg leading-relaxed text-white/80 sm:text-xl">
-                    MUSUBIは「結び」の精神のもと、
-                    <br className="hidden sm:block" />
-                    企業と市場、戦略と実行をつなぐパートナーです。
-                  </p>
-                </Reveal>
-                <Reveal delay={2}>
-                  <p className="text-sm leading-relaxed text-white/55 sm:text-base">
-                    私たちは、単なる代行ではなく、クライアントの事業成長に真摯に向き合い、共に成果を創出します。
-                    現場の声を大切にし、再現性のある仕組みを構築することで、
-                    一過性の改善ではなく、持続的な成長を支援します。
-                  </p>
-                </Reveal>
-                <Reveal delay={3}>
-                  <dl className="grid gap-6 border-t border-white/10 pt-8 sm:grid-cols-2">
-                    <div>
-                      <dt className="text-xs tracking-widest text-white/40">
-                        社名
-                      </dt>
-                      <dd className="mt-2 text-sm tracking-wide">MUSUBI</dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs tracking-widest text-white/40">
-                        事業内容
-                      </dt>
-                      <dd className="mt-2 text-sm leading-relaxed text-white/70">
-                        営業支援・インサイドセールス支援・事業成長コンサルティング
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs tracking-widest text-white/40">
-                        ミッション
-                      </dt>
-                      <dd className="mt-2 text-sm leading-relaxed text-white/70">
-                        企業の潜在力を引き出し、持続的な成長を実現する
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs tracking-widest text-white/40">
-                        バリュー
-                      </dt>
-                      <dd className="mt-2 text-sm leading-relaxed text-white/70">
-                        誠実・実行・共創
-                      </dd>
-                    </div>
-                  </dl>
-                </Reveal>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact */}
-        <section id="contact" className="bg-white px-6 py-24 lg:px-8 lg:py-32">
-          <div className="mx-auto max-w-6xl">
-            <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-              <Reveal>
-                <p className="text-xs tracking-[0.4em] text-neutral-400">
-                  CONTACT
-                </p>
-                <h2 className="mt-4 text-3xl font-light tracking-wider sm:text-4xl">
-                  お問い合わせ
-                </h2>
-                <p className="mt-6 text-sm leading-relaxed text-neutral-500 sm:text-base">
-                  サービスに関するご相談、お見積もり、協業のご提案など、
-                  お気軽にお問い合わせください。
-                  内容を確認のうえ、2営業日以内にご返信いたします。
-                </p>
-
-                <div className="mt-10 space-y-4">
-                  <div>
-                    <p className="text-xs tracking-widest text-neutral-400">
-                      メール
-                    </p>
-                    <a
-                      href="mailto:info@musubi.co.jp"
-                      className="mt-1 inline-block text-sm transition-opacity hover:opacity-60"
-                    >
-                      info@musubi.co.jp
-                    </a>
-                  </div>
-                  <div>
-                    <p className="text-xs tracking-widest text-neutral-400">
-                      対応時間
-                    </p>
-                    <p className="mt-1 text-sm text-neutral-600">
-                      平日 9:00 – 18:00
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={1}>
-                <form className="space-y-6 border border-neutral-200 p-8 lg:p-10">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-xs tracking-widest text-neutral-400"
-                    >
-                      お名前
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      className="mt-2 w-full border-b border-neutral-200 bg-transparent py-3 text-sm outline-none transition-colors focus:border-neutral-950"
-                      placeholder="山田 太郎"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-xs tracking-widest text-neutral-400"
-                    >
-                      メールアドレス
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      className="mt-2 w-full border-b border-neutral-200 bg-transparent py-3 text-sm outline-none transition-colors focus:border-neutral-950"
-                      placeholder="example@company.co.jp"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="company"
-                      className="block text-xs tracking-widest text-neutral-400"
-                    >
-                      会社名
-                    </label>
-                    <input
-                      id="company"
-                      name="company"
-                      type="text"
-                      className="mt-2 w-full border-b border-neutral-200 bg-transparent py-3 text-sm outline-none transition-colors focus:border-neutral-950"
-                      placeholder="株式会社〇〇"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-xs tracking-widest text-neutral-400"
-                    >
-                      お問い合わせ内容
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={4}
-                      required
-                      className="mt-2 w-full resize-none border-b border-neutral-200 bg-transparent py-3 text-sm outline-none transition-colors focus:border-neutral-950"
-                      placeholder="ご相談内容をご記入ください"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-neutral-950 py-4 text-xs tracking-widest text-white transition-all hover:bg-neutral-800"
-                  >
-                    送信する
-                  </button>
-                </form>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-neutral-200 bg-white px-6 py-8 lg:px-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-xs tracking-[0.35em] text-neutral-950">MUSUBI</p>
-          <p className="text-xs text-neutral-400">
-            © {new Date().getFullYear()} MUSUBI. All rights reserved.
+          ))}
+        </div>
+      </div>
+    </div>
+  </Reveal>
+</section>
+<section id="workflow" className="bg-white px-8 py-32 md:px-12 md:py-44">
+  <div className="mx-auto max-w-7xl">
+    <Reveal>
+      <div className="mb-24 grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-end">
+        <div>
+          <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">
+            WORK FLOW
           </p>
+          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.08em] md:text-[60px]">
+  営業成果までの流れ
+</h2>
         </div>
-      </footer>
-    </>
+
+        <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
+          課題の整理から、ターゲット設計、実行、改善提案まで。
+          一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
+        </p>
+      </div>
+    </Reveal>
+
+    <div className="border-t border-black/10">
+      {workflow.map((item, index) => (
+        <Reveal key={item.number} delay={(index + 1) as 1 | 2 | 3}>
+          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1.4fr] md:items-start">
+  <p className="font-serif text-3xl tracking-[0.12em] text-neutral-300 transition-colors duration-700 group-hover:text-neutral-900">
+    {item.number}
+  </p>
+
+  <h3 className="text-2xl font-light tracking-[0.16em] text-neutral-900 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
+    {item.title}
+  </h3>
+
+  <p className="max-w-[620px] text-sm leading-[2.2] tracking-[0.055em] text-neutral-600 transition-colors duration-700 group-hover:text-neutral-800">
+    {item.text}
+  </p>
+</div>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>
+     <section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-12 md:py-48">
+  <div className="mx-auto max-w-7xl">
+    <Reveal>
+      <div className="grid gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+        <div>
+          <p className="mb-14 text-xs tracking-[0.65em] text-white/35">SERVICES</p>
+          <h2 className="text-[40px] font-light leading-[1.55] tracking-[0.12em] md:text-[58px]">
+            事業内容
+          </h2>
+        </div>
+
+        <p className="max-w-[720px] text-[15px] leading-[2.35] tracking-[0.055em] text-white/58">
+          AIを徹底活用したインサイドセールス支援。
+          架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
+          リスト作成・訴求設計・スクリプト作成・架電実行・
+          結果分析・改善提案までを一気通貫でサポートします。
+          効率と成果、その両方を追求する営業パートナーです。
+        </p>
+      </div>
+    </Reveal>
+
+    <div className="mt-28 border-t border-white/15">
+      {services.map((service, index) => (
+        <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
+          <article className="group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.65fr_1.4fr]">
+            <p className="font-serif text-4xl tracking-[0.12em] text-white/30 transition-colors duration-700 group-hover:text-white/70">
+              {service.number}
+            </p>
+
+            <h3 className="text-2xl font-light tracking-[0.16em] text-white transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
+              {service.title}
+            </h3>
+
+            <p className="max-w-[680px] text-sm leading-[2.2] tracking-[0.05em] text-white/55 transition-colors duration-700 group-hover:text-white/75">
+              {service.text}
+            </p>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section id="company" className="bg-white px-8 py-32 md:px-12 md:py-44">
+  <div className="mx-auto max-w-7xl">
+    <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">COMPANY</p>
+
+    <div className="grid gap-16 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+      <div>
+        <h2 className="text-[34px] font-light leading-[1.6] tracking-[0.12em] md:text-[46px]">
+          会社概要
+        </h2>
+<div className="mt-1">
+  <img
+    src="/images/logo-1.2.svg"
+    alt="株式会社 糸喜-MUSUBI"
+    className="w-[360px] h-auto -ml-5"
+  />
+</div>
+      </div>
+
+      <div className="border-t border-black/10">
+        {[
+          ["会社名", "株式会社 糸喜-MUSUBI"],
+          ["代表者", "横山 竜之介"],
+          ["設立", "2017年4月4日"],
+          ["資本金", "1,500,000円"],
+          ["所在地", "〒152-0023 東京都目黒区八雲1-1-5"],
+          ["電話番号", "050-3591-0222"],
+          ["メール", "biz@musubi-44.com"],
+          ["事業内容", "営業支援 / インサイドセールス / DX・SaaS支援"],
+        ].map(([label, value]) => (
+          <div
+  key={label}
+  className="group grid gap-3 border-b border-black/10 py-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[180px_1fr]"
+>
+  <p className="text-xs tracking-[0.22em] text-neutral-400 transition-colors duration-700 group-hover:text-neutral-600">
+    {label}
+  </p>
+
+  <p className="text-sm leading-[1.9] tracking-[0.05em] text-neutral-700 transition-all duration-700 group-hover:translate-x-1">
+    {value}
+  </p>
+</div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+     <section id="contact" className="relative overflow-hidden bg-black px-8 py-28 text-white md:px-12 md:py-36">
+  <div className="pointer-events-none absolute right-10 top-16 h-40 w-40 border border-white/10 md:right-24 md:h-56 md:w-56" />
+
+  <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+    <div>
+      <p className="mb-8 text-xs font-semibold tracking-[0.55em] text-white/35">CONTACT</p>
+
+      <h2 className="text-[32px] font-light leading-[1.6] tracking-[0.08em] md:text-[44px]">
+        その一件の電話から、
+        <br />
+        商談を結ぶ。
+      </h2>
+
+      <p className="mt-8 max-w-xl text-sm leading-[2.2] tracking-[0.06em] text-white/60">
+        御社の営業課題に合わせて、最適な進め方をご提案します。
+        <br />
+        まずはお気軽にご相談ください。
+      </p>
+
+      <div className="mt-12 space-y-5 text-sm tracking-[0.06em] text-white/70">
+<a
+  href="tel:05035910222"
+  className="flex items-center gap-4 transition-colors duration-500 hover:text-white"
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20">
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M22 16.92V20a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 2 4.18 2 2 0 0 1 4 2h3.09a2 2 0 0 1 2 1.72c.12.9.33 1.77.63 2.61a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.47-1.18a2 2 0 0 1 2.11-.45c.84.3 1.71.51 2.61.63A2 2 0 0 1 22 16.92Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </span>
+
+  <span>050-3591-0222</span>
+</a>
+
+        <a
+  href="mailto:biz@musubi-44.com"
+  className="flex items-center gap-4 transition-colors duration-500 hover:text-white"
+>
+  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15">
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4 6H20V18H4V6Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 7L12 13L20 7"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </span>
+
+  <span>biz@musubi-44.com</span>
+</a>
+      </div>
+    </div>
+
+    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10">
+      <h3 className="text-2xl font-light tracking-[0.08em]">お問い合わせ</h3>
+      <p className="mt-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-500">
+        必要事項をご記入のうえ送信してください。
+      </p>
+
+      <div className="mt-8 space-y-5">
+        <label className="block text-xs tracking-[0.08em] text-neutral-600">
+          会社名
+          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="株式会社〇〇" />
+        </label>
+
+        <label className="block text-xs tracking-[0.08em] text-neutral-600">
+          お名前
+          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="山田 太郎" />
+        </label>
+
+        <label className="block text-xs tracking-[0.08em] text-neutral-600">
+          メールアドレス
+          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="taro@example.com" />
+        </label>
+
+        <label className="block text-xs tracking-[0.08em] text-neutral-600">
+          お問い合わせ内容
+          <textarea className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="ご相談内容をご記入ください" />
+        </label>
+
+        <button type="button" className="mt-2 bg-black px-8 py-4 text-xs tracking-[0.2em] text-white">
+          送信する →
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+<footer className="bg-black px-8 py-16 text-white md:px-12">
+  <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <div>
+      <p className="text-xs font-semibold tracking-[0.6em] text-white/80">MUSUBI</p>
+      <p className="mt-6 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
+        電話の先にいる「人」と向き合い、インサイドセールス。
+        人と人を結び、商談につなぎます。
+      </p>
+    </div>
+
+    <div>
+      <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">SERVICE</p>
+      <ul className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
+        <li>テレアポ代行</li>
+        <li>インサイドセールス代行</li>
+        <li>リスト・スクリプト設計</li>
+      </ul>
+    </div>
+
+    <div>
+      <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">COMPANY</p>
+      <ul className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
+        <li>ビジョン</li>
+        <li>お客様の声</li>
+        <li>会社概要</li>
+      </ul>
+    </div>
+
+    <div>
+      <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">CONTACT</p>
+      <div className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
+        <p>Tel : 050-3591-0222</p>
+        <p>Mail : biz@musubi-44.com</p>
+      </div>
+    </div>
+  </div>
+
+  <div className="mx-auto flex max-w-7xl flex-col gap-4 pt-8 text-[10px] tracking-[0.12em] text-white/35 md:flex-row md:items-center md:justify-between">
+    <p>東京都 / インサイドセールス・テレアポ代行</p>
+    <p>© 株式会社 糸喜 MUSUBI</p>
+  </div>
+</footer>
+    </main>
   );
 }
