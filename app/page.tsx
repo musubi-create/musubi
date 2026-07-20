@@ -1,11 +1,13 @@
 "use client";
 
+import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Reveal from "./components/Reveal";
 const navLinks = [
   { label: "ビジョン", href: "#vision" },
   { label: "サービス", href: "#services" },
-  { label: "お客様の声", href: "#voice" },
+  { label: "営業の流れ", href: "#workflow" },
+  { label: "支援イメージ", href: "#voice" },
   { label: "会社概要", href: "#company" },
   { label: "お問い合わせ", href: "#contact" },
 ];
@@ -72,14 +74,97 @@ const workflow = [
   },
 ];
 
+const supportImages = [
+  {
+    number: "01",
+    title: "営業体制の立ち上げ",
+    challenge: "新規開拓の進め方や営業体制を整理したい",
+    support: "ターゲット設計、リスト作成、トーク設計から実行まで伴走",
+    goal: "検証と改善を継続できる営業体制へ",
+  },
+  {
+    number: "02",
+    title: "商談機会の創出",
+    challenge: "見込み顧客との新たな接点を増やしたい",
+    support: "商材理解と市場分析を踏まえ、最適なアプローチを設計・実行",
+    goal: "将来の商談につながる接点を着実に積み重ねる",
+  },
+  {
+    number: "03",
+    title: "インサイドセールス支援",
+    challenge: "社内の営業リソースやノウハウが不足している",
+    support: "架電、結果分析、改善提案まで一気通貫で支援",
+    goal: "再現性のある営業活動と改善サイクルを構築",
+  },
+];
+
+type FormValues = {
+  company: string;
+  name: string;
+  email: string;
+  message: string;
+  privacy: boolean;
+};
+
+type FormErrors = Partial<Record<keyof FormValues, string>>;
+
+const initialFormValues: FormValues = {
+  company: "",
+  name: "",
+  email: "",
+  message: "",
+  privacy: false,
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Home() {
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+
+  const validateForm = (values: FormValues) => {
+    const errors: FormErrors = {};
+
+    if (!values.company.trim()) errors.company = "会社名を入力してください。";
+    if (!values.name.trim()) errors.name = "お名前を入力してください。";
+    if (!values.email.trim()) {
+      errors.email = "メールアドレスを入力してください。";
+    } else if (!emailPattern.test(values.email)) {
+      errors.email = "メールアドレスの形式を確認してください。";
+    }
+    if (!values.message.trim()) errors.message = "お問い合わせ内容を入力してください。";
+    if (!values.privacy) errors.privacy = "個人情報の取扱いに同意してください。";
+
+    return errors;
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (formStatus === "submitting") return;
+
+    const errors = validateForm(formValues);
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      setFormStatus("idle");
+      return;
+    }
+
+    setFormStatus("submitting");
+    window.setTimeout(() => {
+      setFormStatus("error");
+    }, 400);
+  };
+
   return (
     <main className="min-h-screen bg-white text-neutral-950">
       <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/35 text-white backdrop-blur-xl transition-colors duration-500">
 <div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-between md:px-14 lg:px-20">
 <a
   href="#"
-  className="block transition-opacity duration-500 hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
+  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
   aria-label="MUSUBI"
 >
 <Image
@@ -87,11 +172,11 @@ export default function Home() {
   alt="MUSUBI"
   width={595}
   height={595}
-  className="h-14 w-auto md:h-20"
+  className="h-14 w-auto invert md:h-20"
 />
 </a>
 
-  <nav className="hidden items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex">
+  <nav className="hidden items-center gap-6 text-[10px] lg:gap-8 lg:text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex">
     {navLinks.map((link) => (
       <a
         key={link.href}
@@ -122,7 +207,7 @@ export default function Home() {
     alt="MUSUBI Hero"
     fill
     priority
-    className="hidden object-cover object-center motion-safe:animate-[slowZoom_18s_ease-in-out_infinite_alternate] md:block"
+    className="hidden object-cover object-center md:block"
   />
 </>
 <div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center transition-all md:flex">
@@ -243,7 +328,7 @@ export default function Home() {
     <Reveal>
       <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
         <div>
-          <p className="mb-12 text-xs tracking-[0.65em] text-white/35">
+          <p className="mb-12 text-xs tracking-[0.65em] text-white/55">
             SERVICES
           </p>
 
@@ -253,7 +338,7 @@ export default function Home() {
         </div>
 
         <div className="flex items-end">
-          <p className="ml-9 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-white/58">
+          <p className="ml-9 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-white/72">
             AIを徹底活用したインサイドセールス支援。
             架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
             リスト作成・訴求設計・スクリプト作成・架電実行・
@@ -268,7 +353,7 @@ export default function Home() {
       {services.map((service, index) => (
         <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
           <article className="group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr]">
-            <p className="font-serif text-4xl tracking-[0.12em] text-white/30 transition-colors duration-700 group-hover:text-white/70">
+            <p className="font-serif text-4xl tracking-[0.12em] text-white/55 transition-colors duration-700 group-hover:text-white/85">
               {service.number}
             </p>
 
@@ -276,7 +361,7 @@ export default function Home() {
               {service.title}
             </h3>
 
-            <p className="max-w-[680px] text-sm leading-[2.2] tracking-[0.05em] text-white/55 transition-colors duration-700 group-hover:text-white/75">
+            <p className="max-w-[680px] text-sm leading-[2.2] tracking-[0.05em] text-white/72 transition-colors duration-700 group-hover:text-white/90">
               {service.text}
             </p>
           </article>
@@ -289,71 +374,52 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <p className="mb-5 text-xs font-semibold tracking-[0.45em] text-neutral-400">
-              VOICE / CASE
+              SUPPORT IMAGE
             </p>
             <h2 className="text-[30px] font-light tracking-[0.1em] md:text-[42px]">
-              お客様の声・導入事例
+              支援イメージ
             </h2>
           </div>
 
           <div className="grid gap-8 md:grid-cols-3">
-            {[
-              {
-                number: "01",
-                category: "SaaS・従業員50名",
-                result: "アポ獲得率 2.6倍",
-                title:
-                  "ターゲット再設計とトーク改善により、停滞していたアポ数を回復。",
-                comment:
-                  "数字だけでなく、断られた理由まで共有してくれるのが心強い。",
-              },
-              {
-                number: "02",
-                category: "人材・従業員200名",
-                result: "エンプラ商談 月8件",
-                title:
-                  "決裁者への直アプローチで、接点のなかった大手企業の商談を獲得。",
-                comment:
-                  "自社では届かなかった層に、丁寧に接点を作ってもらえた。",
-              },
-              {
-                number: "03",
-                category: "製造・従業員1,000名",
-                result: "稼働準備 2週間",
-                title:
-                  "IS組織がなくても、短期で安定したアポイント供給体制を構築。",
-                comment:
-                  "眠っていたリストから商談が生まれたのは驚きだった。",
-              },
-            ].map((item) => (
+            {supportImages.map((item) => (
               <article
                 key={item.number}
                 className="group relative min-h-[420px] rounded-2xl border border-black/10 bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] md:p-10"
               >
                 <div className="mb-10 flex items-start justify-between">
                   <p className="text-[11px] font-semibold tracking-[0.35em] text-neutral-400">
-                    CASE {item.number}
+                    IMAGE {item.number}
                   </p>
                   <p className="text-[56px] font-light leading-none text-neutral-200 transition-colors duration-500 group-hover:text-neutral-800">
                     {item.number}
                   </p>
                 </div>
 
-                <p className="mb-4 text-xs tracking-[0.16em] text-neutral-400">
-                  {item.category}
-                </p>
-
-                <p className="mb-6 inline-block border-b border-black pb-2 text-sm font-semibold tracking-[0.12em] text-neutral-950">
-                  {item.result}
-                </p>
-
                 <h3 className="mb-8 text-[19px] font-light leading-[1.9] tracking-[0.04em] text-neutral-950">
                   {item.title}
                 </h3>
 
-                <p className="border-t border-black/10 pt-6 text-sm leading-[2.2] tracking-[0.04em] text-neutral-500">
-                  「{item.comment}」
-                </p>
+                <div className="space-y-5 border-t border-black/10 pt-6 text-sm leading-[2] tracking-[0.04em] text-neutral-600">
+                  <p>
+                    <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+                      課題
+                    </span>
+                    {item.challenge}
+                  </p>
+                  <p>
+                    <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+                      支援内容
+                    </span>
+                    {item.support}
+                  </p>
+                  <p>
+                    <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+                      目指す状態
+                    </span>
+                    {item.goal}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
@@ -374,7 +440,7 @@ export default function Home() {
     alt="株式会社 糸喜-MUSUBI"
     width={595}
     height={595}
-    className="mx-auto mt-2 w-[72vw] max-w-[340px] md:mt-20 md:w-[420px] md:max-w-none"
+    className="mx-auto mt-8 w-[42vw] max-w-[180px] md:mt-14 md:w-[210px] md:max-w-none"
   />
 </div>
       </div>
@@ -458,8 +524,8 @@ export default function Home() {
 >
   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15">
     <svg
-      width="13"
-      height="13"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -485,38 +551,150 @@ export default function Home() {
       </div>
     </div>
 
-    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={(event) => event.preventDefault()}>
+    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={handleSubmit} noValidate>
       <h3 className="text-2xl font-light tracking-[0.08em]">お問い合わせ</h3>
       <p className="mt-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-500">
         必要事項をご記入のうえ送信してください。
       </p>
+      <p className="mt-2 text-[11px] leading-[1.8] tracking-[0.05em] text-neutral-500">
+        <span className="font-semibold text-neutral-900">*</span> は必須項目です。送信先：biz@musubi-44.com
+      </p>
 
       <div className="mt-8 space-y-5">
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          会社名
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="株式会社〇〇" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="company">
+            会社名 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="company"
+            name="company"
+            value={formValues.company}
+            onChange={(event) => setFormValues((values) => ({ ...values, company: event.target.value }))}
+            className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="株式会社〇〇"
+            aria-invalid={Boolean(formErrors.company)}
+            aria-describedby={formErrors.company ? "company-error" : undefined}
+            required
+          />
+          {formErrors.company ? (
+            <p id="company-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.company}
+            </p>
+          ) : null}
+        </div>
 
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          お名前
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="山田 太郎" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="name">
+            お名前 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="name"
+            name="name"
+            value={formValues.name}
+            onChange={(event) => setFormValues((values) => ({ ...values, name: event.target.value }))}
+            className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="山田 太郎"
+            aria-invalid={Boolean(formErrors.name)}
+            aria-describedby={formErrors.name ? "name-error" : undefined}
+            required
+          />
+          {formErrors.name ? (
+            <p id="name-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.name}
+            </p>
+          ) : null}
+        </div>
 
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          メールアドレス
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="taro@example.com" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="email">
+            メールアドレス <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formValues.email}
+            onChange={(event) => setFormValues((values) => ({ ...values, email: event.target.value }))}
+            className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="taro@example.com"
+            aria-invalid={Boolean(formErrors.email)}
+            aria-describedby={formErrors.email ? "email-error" : undefined}
+            required
+          />
+          {formErrors.email ? (
+            <p id="email-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.email}
+            </p>
+          ) : null}
+        </div>
 
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          お問い合わせ内容
-          <textarea className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="ご相談内容をご記入ください" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="message">
+            お問い合わせ内容 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formValues.message}
+            onChange={(event) => setFormValues((values) => ({ ...values, message: event.target.value }))}
+            className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="ご相談内容をご記入ください"
+            aria-invalid={Boolean(formErrors.message)}
+            aria-describedby={formErrors.message ? "message-error" : undefined}
+            required
+          />
+          {formErrors.message ? (
+            <p id="message-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.message}
+            </p>
+          ) : null}
+        </div>
+
+        <div>
+          <label className="flex items-start gap-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-600" htmlFor="privacy">
+            <input
+              id="privacy"
+              name="privacy"
+              type="checkbox"
+              checked={formValues.privacy}
+              onChange={(event) => setFormValues((values) => ({ ...values, privacy: event.target.checked }))}
+              className="mt-1 h-4 w-4 border-black/20 accent-black"
+              aria-invalid={Boolean(formErrors.privacy)}
+              aria-describedby={formErrors.privacy ? "privacy-error" : undefined}
+              required
+            />
+            <span>
+              個人情報の取扱いに同意します <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+            </span>
+          </label>
+          {formErrors.privacy ? (
+            <p id="privacy-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.privacy}
+            </p>
+          ) : null}
+        </div>
+
+        <div aria-live="polite" role="status" className="min-h-10 text-xs leading-[1.8] tracking-[0.05em]">
+          {formStatus === "submitting" ? (
+            <p className="text-neutral-600">送信中です。完了までこのままお待ちください。</p>
+          ) : null}
+          {formStatus === "success" ? (
+            <p className="text-green-700">送信が完了しました。</p>
+          ) : null}
+          {formStatus === "error" ? (
+            <p className="text-red-700">
+              現在の環境ではメール送信サービスが未設定のため送信できません。入力内容は画面上に保持されています。送信機能の有効化には、biz@musubi-44.com 宛に送信するためのメール送信サービスと環境変数の設定が必要です。
+            </p>
+          ) : null}
+        </div>
 
         <button
   type="submit"
-  className="group mt-8 inline-flex items-center gap-3 bg-black px-8 py-4 text-[12px] font-semibold tracking-[0.18em] text-white transition-all duration-500 hover:-translate-y-1 hover:bg-neutral-800 hover:shadow-[0_18px_35px_rgba(0,0,0,0.25)]"
+  disabled={formStatus === "submitting"}
+  aria-disabled={formStatus === "submitting"}
+  className="group mt-4 inline-flex items-center gap-3 bg-black px-8 py-4 text-[12px] font-semibold tracking-[0.18em] text-white transition-all duration-500 hover:-translate-y-1 hover:bg-neutral-800 hover:shadow-[0_18px_35px_rgba(0,0,0,0.25)] disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:hover:translate-y-0 disabled:hover:shadow-none"
 >
-  <span>送信する</span>
+  <span>{formStatus === "submitting" ? "送信中" : "送信する"}</span>
   <span className="relative inline-block h-[1px] w-6 bg-white transition-all duration-500 group-hover:w-8">
     <span className="absolute -right-[1px] -top-[3px] h-2 w-2 rotate-45 border-r border-t border-white" />
   </span>
