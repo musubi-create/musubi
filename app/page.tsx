@@ -75,26 +75,28 @@ const workflow = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-black/10 bg-white/55 text-neutral-950 backdrop-blur-md">
-<div className="flex h-20 w-full items-center justify-start px-6 md:justify-between md:px-[95px]">
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/35 text-white backdrop-blur-xl transition-colors duration-500">
+<div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-between md:px-14 lg:px-20">
 <a
   href="#"
-  className="block transition-opacity duration-500 hover:opacity-60"
+  className="block transition-opacity duration-500 hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
   aria-label="MUSUBI"
 >
-<img
+<Image
   src="/images/logo-2.2.svg"
   alt="MUSUBI"
-  className="h-16 w-auto md:h-33"
+  width={595}
+  height={595}
+  className="h-14 w-auto md:h-20"
 />
 </a>
 
-  <nav className="hidden items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-black md:flex">
+  <nav className="hidden items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex">
     {navLinks.map((link) => (
       <a
         key={link.href}
         href={link.href}
-        className="transition-all duration-500 hover:text-black hover:opacity-70"
+        className="transition-all duration-500 hover:text-white hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
       >
         {link.label}
       </a>
@@ -103,7 +105,7 @@ export default function Home() {
 </div>
 </header>
 
-      <section className="relative h-screen min-h-[720px] overflow-hidden">
+      <section className="relative h-screen min-h-[760px] overflow-hidden bg-black">
 <>
   {/* スマホ用 */}
   <Image
@@ -120,14 +122,16 @@ export default function Home() {
     alt="MUSUBI Hero"
     fill
     priority
-    className="hidden object-cover object-center hero-slow-zoom md:block"
+    className="hidden object-cover object-center motion-safe:animate-[slowZoom_18s_ease-in-out_infinite_alternate] md:block"
   />
 </>
 <div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center transition-all md:flex">
-  <img
+  <Image
   src="/images/logo-2.2.svg"
   alt=""
-  className="w-[58vw] max-w-[250px] opacity-18 transition-all duration-800 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+  width={595}
+  height={595}
+  className="w-[58vw] max-w-[250px] opacity-20 transition-all duration-700 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
 />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
@@ -139,7 +143,7 @@ export default function Home() {
         </div>
       </section>
 
-<section id="vision" className="bg-white px-8 py-32 md:px-12 md:py-44">
+<section id="vision" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
   <Reveal>
     <div className="mx-auto max-w-7xl">
       <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">OUR VISION</p>
@@ -193,7 +197,7 @@ export default function Home() {
     </div>
   </Reveal>
 </section>
-<section id="workflow" className="bg-white px-8 py-32 md:px-12 md:py-44">
+<section id="workflow" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <Reveal>
       <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
@@ -234,7 +238,7 @@ export default function Home() {
     </div>
   </div>
 </section>
-<section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-12 md:py-48">
+<section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <Reveal>
       <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
@@ -281,7 +285,7 @@ export default function Home() {
     </div>
   </div>
 </section>
-      <section id="voice" className="bg-[#f7f6f3] px-8 py-32 text-neutral-950 md:px-12">
+      <section id="voice" className="bg-[#f7f6f3] px-8 py-32 text-neutral-950 md:px-14 md:py-44 lg:px-20">
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <p className="mb-5 text-xs font-semibold tracking-[0.45em] text-neutral-400">
@@ -355,7 +359,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-<section id="company" className="bg-white px-8 py-32 md:px-12 md:py-44">
+<section id="company" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">COMPANY</p>
 
@@ -365,9 +369,11 @@ export default function Home() {
           会社概要
         </h2>
 <div className="mt-1">
-  <img
+  <Image
     src="/images/logo-1.2.svg"
     alt="株式会社 糸喜-MUSUBI"
+    width={595}
+    height={595}
     className="mx-auto mt-2 w-[72vw] max-w-[340px] md:mt-20 md:w-[420px] md:max-w-none"
   />
 </div>
@@ -402,7 +408,7 @@ export default function Home() {
   </div>
 </section>
 
-     <section id="contact" className="relative overflow-hidden bg-black px-8 py-28 text-white md:px-12 md:py-36">
+     <section id="contact" className="relative overflow-hidden bg-black px-8 py-28 text-white md:px-14 md:py-40 lg:px-20">
   
   <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
     <div>
@@ -479,7 +485,7 @@ export default function Home() {
       </div>
     </div>
 
-    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10">
+    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={(event) => event.preventDefault()}>
       <h3 className="text-2xl font-light tracking-[0.08em]">お問い合わせ</h3>
       <p className="mt-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-500">
         必要事項をご記入のうえ送信してください。
@@ -488,22 +494,22 @@ export default function Home() {
       <div className="mt-8 space-y-5">
         <label className="block text-xs tracking-[0.08em] text-neutral-600">
           会社名
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="株式会社〇〇" />
+          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="株式会社〇〇" />
         </label>
 
         <label className="block text-xs tracking-[0.08em] text-neutral-600">
           お名前
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="山田 太郎" />
+          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="山田 太郎" />
         </label>
 
         <label className="block text-xs tracking-[0.08em] text-neutral-600">
           メールアドレス
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="taro@example.com" />
+          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="taro@example.com" />
         </label>
 
         <label className="block text-xs tracking-[0.08em] text-neutral-600">
           お問い合わせ内容
-          <textarea className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="ご相談内容をご記入ください" />
+          <textarea className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black" placeholder="ご相談内容をご記入ください" />
         </label>
 
         <button
@@ -519,7 +525,7 @@ export default function Home() {
     </form>
   </div>
 </section>
-<footer className="bg-black px-8 py-16 text-white md:px-12">
+<footer className="bg-black px-8 py-16 text-white md:px-14 lg:px-20">
   <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
     <div>
       <p className="text-xs font-semibold tracking-[0.6em] text-white/80">MUSUBI</p>
