@@ -15,16 +15,19 @@ const navLinks = [
 const services = [
   {
     number: "01",
+    id: "sales-support",
     title: "営業支援",
     text: "新規開拓から商談創出まで、事業成長に必要な営業活動を設計し、実行まで伴走します。",
   },
   {
     number: "02",
+    id: "inside-sales",
     title: "インサイドセールス",
     text: "顧客との最初の接点を丁寧に設計し、見込み顧客との関係構築を支援します。",
   },
   {
     number: "03",
+    id: "dx-saas",
     title: "DX・SaaS支援",
     text: "SaaSやデジタルツールの導入・活用を通じて、営業組織の生産性向上を支えます。",
   },
@@ -161,10 +164,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-neutral-950">
       <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/35 text-white backdrop-blur-xl transition-colors duration-500">
-<div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-between md:px-14 lg:px-20">
+<div className="relative mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-end md:px-14 lg:px-20">
 <a
   href="#"
-  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:absolute md:left-8 lg:left-10"
   aria-label="MUSUBI"
 >
 <Image
@@ -216,7 +219,7 @@ export default function Home() {
   alt=""
   width={595}
   height={595}
-  className="w-[58vw] max-w-[250px] opacity-20 transition-all duration-700 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+  className="w-[58vw] max-w-[250px] opacity-20 transition-all duration-700 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[46vw] md:min-w-[420px] md:max-w-[660px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
 />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
@@ -352,7 +355,7 @@ export default function Home() {
     <div className="mt-28 border-t border-white/15">
       {services.map((service, index) => (
         <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
-          <article className="group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr]">
+          <article id={`service-${service.id}`} className="scroll-mt-28 group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr]">
             <p className="font-serif text-4xl tracking-[0.12em] text-white/55 transition-colors duration-700 group-hover:text-white/85">
               {service.number}
             </p>
@@ -440,7 +443,7 @@ export default function Home() {
     alt="株式会社 糸喜-MUSUBI"
     width={595}
     height={595}
-    className="mx-auto mt-8 w-[42vw] max-w-[180px] md:mt-14 md:w-[210px] md:max-w-none"
+    className="mt-8 w-[42vw] max-w-[180px] md:mt-12 md:w-[210px] md:max-w-none"
   />
 </div>
       </div>
@@ -706,38 +709,76 @@ export default function Home() {
 <footer className="bg-black px-8 py-16 text-white md:px-14 lg:px-20">
   <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
     <div>
-      <p className="text-xs font-semibold tracking-[0.6em] text-white/80">MUSUBI</p>
+      <a
+        href="#"
+        className="inline-block text-xs font-semibold tracking-[0.6em] text-white/80 transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        aria-label="ページ最上部へ戻る"
+      >
+        MUSUBI
+      </a>
       <div className="mt-5 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
   <p>電話の先にいる「人」と向き合うインサイドセールス。</p>
   <p className="mt-2">人と人をむすび、商談につなぎます。</p>
 </div>
     </div>
 
-    <div>
+    <nav aria-label="サービス" className="text-xs tracking-[0.08em]">
       <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">SERVICE</p>
-      <ul className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
-        <li>テレアポ代行</li>
-        <li>インサイドセールス代行</li>
-        <li>リスト・スクリプト設計</li>
+      <ul className="mt-6 space-y-4 text-white/55">
+        {services.map((service) => (
+          <li key={service.id}>
+            <a
+              href={`#service-${service.id}`}
+              className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              {service.title}
+            </a>
+          </li>
+        ))}
       </ul>
-    </div>
+    </nav>
 
-    <div>
+    <nav aria-label="会社情報" className="text-xs tracking-[0.08em]">
       <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">COMPANY</p>
-      <ul className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
-        <li>ビジョン</li>
-        <li>お客様の声</li>
-        <li>会社概要</li>
+      <ul className="mt-6 space-y-4 text-white/55">
+        <li>
+          <a href="#vision" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            ビジョン
+          </a>
+        </li>
+        <li>
+          <a href="#workflow" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            営業の流れ
+          </a>
+        </li>
+        <li>
+          <a href="#voice" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            支援イメージ
+          </a>
+        </li>
+        <li>
+          <a href="#company" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            会社概要
+          </a>
+        </li>
       </ul>
-    </div>
+    </nav>
 
-    <div>
+    <nav aria-label="お問い合わせ" className="text-xs tracking-[0.08em]">
       <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">CONTACT</p>
-      <div className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
-        <p>Tel : 050-3591-0222</p>
-        <p>Mail : biz@musubi-44.com</p>
-      </div>
-    </div>
+      <ul className="mt-6 space-y-4 text-white/55">
+        <li>
+          <a href="tel:05035910222" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            Tel : 050-3591-0222
+          </a>
+        </li>
+        <li>
+          <a href="mailto:biz@musubi-44.com" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            Mail : biz@musubi-44.com
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 
   <div className="mx-auto flex max-w-7xl flex-col gap-4 pt-8 text-[10px] tracking-[0.12em] text-white/35 md:flex-row md:items-center md:justify-between">
