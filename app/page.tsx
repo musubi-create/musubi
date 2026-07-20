@@ -219,7 +219,7 @@ export default function Home() {
   alt=""
   width={595}
   height={595}
-  className="w-[58vw] max-w-[250px] opacity-20 transition-all duration-700 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[46vw] md:min-w-[420px] md:max-w-[660px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+  className="w-[58vw] max-w-[250px] opacity-20 transition-all duration-700 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[46vw] md:min-w-[420px] md:max-w-[660px] md:-translate-x-6 md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)] lg:-translate-x-8"
 />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
@@ -443,7 +443,7 @@ export default function Home() {
     alt="株式会社 糸喜-MUSUBI"
     width={595}
     height={595}
-    className="mt-8 w-[42vw] max-w-[180px] md:mt-12 md:w-[210px] md:max-w-none"
+    className="ml-6 mt-5 w-[42vw] max-w-[180px] md:ml-10 md:mt-8 md:w-[210px] md:max-w-none"
   />
 </div>
       </div>
