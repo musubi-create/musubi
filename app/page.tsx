@@ -443,7 +443,7 @@ export default function Home() {
     alt="株式会社 糸喜-MUSUBI"
     width={595}
     height={595}
-    className="ml-6 mt-5 w-[42vw] max-w-[180px] md:-mt-10 md:ml-24 md:w-[210px] md:max-w-none"
+    className="ml-6 mt-5 w-[42vw] max-w-[180px] md:mt-10 md:w-[238px] md:max-w-none md:-translate-x-[19px]"
   />
 </div>
       </div>
