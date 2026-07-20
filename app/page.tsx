@@ -201,7 +201,7 @@ export default function Home() {
     alt="MUSUBI Hero"
     fill
     priority
-    className="block scale-[1.12] object-cover object-[56%_center] md:hidden"
+    className="block scale-[1.12] origin-[left_center] object-cover object-[left_center] md:hidden"
   />
 
   {/* PC・タブレット用 */}
