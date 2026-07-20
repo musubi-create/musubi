@@ -201,7 +201,7 @@ export default function Home() {
     alt="MUSUBI Hero"
     fill
     priority
-    className="block object-cover md:hidden"
+    className="block object-cover object-[58%_center] md:hidden"
   />
 
   {/* PC・タブレット用 */}
@@ -223,11 +223,11 @@ export default function Home() {
 />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
-          <span className="text-[13px] font-semibold tracking-[0.45em] text-neutral-900 drop-shadow-[0_1px_8px_rgba(255,255,255,.9)]">
+          <span className="text-[13px] font-semibold tracking-[0.45em] text-white drop-shadow-[0_1px_8px_rgba(0,0,0,.65)] md:text-neutral-900 md:drop-shadow-[0_1px_8px_rgba(255,255,255,.9)]">
             SCROLL
           </span>
 
-          <div className="mt-4 h-16 w-px bg-gradient-to-b from-neutral-900 to-transparent" />
+          <div className="mt-4 h-16 w-px bg-gradient-to-b from-white to-transparent md:from-neutral-900" />
         </div>
       </section>
 
