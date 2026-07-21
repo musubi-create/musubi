@@ -107,6 +107,7 @@ type FormValues = {
   email: string;
   message: string;
   privacy: boolean;
+  website: string;
 };
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
@@ -117,6 +118,7 @@ const initialFormValues: FormValues = {
   email: "",
   message: "",
   privacy: false,
+  website: "",
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -161,7 +163,7 @@ export default function Home() {
     return errors;
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (formStatus === "submitting") return;
@@ -175,9 +177,25 @@ export default function Home() {
     }
 
     setFormStatus("submitting");
-    window.setTimeout(() => {
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formValues),
+      });
+      const result = await response.json().catch(() => null) as { errors?: FormErrors } | null;
+
+      if (!response.ok) {
+        if (result?.errors) setFormErrors(result.errors);
+        setFormStatus("error");
+        return;
+      }
+
+      setFormStatus("success");
+    } catch {
       setFormStatus("error");
-    }, 400);
+    }
   };
 
   return (
@@ -657,6 +675,17 @@ export default function Home() {
     </div>
 
     <form className="bg-white p-7 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={handleSubmit} noValidate>
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">Webサイト</label>
+        <input
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formValues.website}
+          onChange={(event) => setFormValues((values) => ({ ...values, website: event.target.value }))}
+        />
+      </div>
       <h3 className="text-2xl font-light tracking-[0.08em]">お問い合わせ</h3>
       <p className="mt-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-500">
         必要事項をご記入のうえ送信してください。
@@ -784,11 +813,11 @@ export default function Home() {
             <p className="text-neutral-600">送信中です。完了までこのままお待ちください。</p>
           ) : null}
           {formStatus === "success" ? (
-            <p className="text-green-700">送信が完了しました。</p>
+            <p className="text-green-700">送信が完了しました。お問い合わせありがとうございます。</p>
           ) : null}
           {formStatus === "error" ? (
             <p className="text-red-700">
-              現在の環境ではメール送信サービスが未設定のため送信できません。入力内容は画面上に保持されています。送信機能の有効化には、biz@musubi-44.com 宛に送信するためのメール送信サービスと環境変数の設定が必要です。
+              メール送信に失敗しました。入力内容をご確認のうえ、時間をおいて再度お試しください。
             </p>
           ) : null}
         </div>
