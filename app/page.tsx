@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Reveal from "./components/Reveal";
 const navLinks = [
@@ -125,6 +125,25 @@ export default function Home() {
   const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
 
   const validateForm = (values: FormValues) => {
     const errors: FormErrors = {};
@@ -179,6 +198,22 @@ export default function Home() {
 />
 </a>
 
+  <button
+    type="button"
+    className="ml-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/20 text-white transition-all duration-300 hover:border-white/45 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:hidden"
+    aria-label={isMobileMenuOpen ? "メニューを閉じる" : "メニューを開く"}
+    aria-controls="mobile-menu"
+    aria-expanded={isMobileMenuOpen}
+    onClick={() => setIsMobileMenuOpen((open) => !open)}
+  >
+    <span className="sr-only">メニュー</span>
+    <span className="flex w-5 flex-col gap-1.5" aria-hidden="true">
+      <span className={`h-px w-full bg-current transition-transform duration-300 ${isMobileMenuOpen ? "translate-y-[7px] rotate-45" : ""}`} />
+      <span className={`h-px w-full bg-current transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+      <span className={`h-px w-full bg-current transition-transform duration-300 ${isMobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+    </span>
+  </button>
+
   <nav className="hidden items-center gap-6 text-[10px] lg:gap-8 lg:text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex">
     {navLinks.map((link) => (
       <a
@@ -192,6 +227,73 @@ export default function Home() {
   </nav>
 </div>
 </header>
+
+<div
+  id="mobile-menu"
+  className={`fixed inset-0 z-[60] bg-black/95 text-white backdrop-blur-2xl transition-all duration-300 md:hidden ${
+    isMobileMenuOpen ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
+  }`}
+  role="dialog"
+  aria-modal="true"
+  aria-label="モバイルナビゲーション"
+  aria-hidden={!isMobileMenuOpen}
+  onClick={() => setIsMobileMenuOpen(false)}
+>
+  <div className={`flex min-h-screen flex-col px-6 py-5 transition-transform duration-300 ${isMobileMenuOpen ? "translate-y-0" : "translate-y-4"}`}>
+    <div className="flex h-11 items-center justify-between">
+      <a
+        href="#"
+        className="block mix-blend-difference transition-opacity duration-500 hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        aria-label="MUSUBI トップへ戻る"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        <Image
+          src="/images/logo-2.2.svg"
+          alt="MUSUBI"
+          width={595}
+          height={595}
+          className="h-14 w-auto invert"
+        />
+      </a>
+      <button
+        type="button"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition-all duration-300 hover:border-white/45 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        aria-label="メニューを閉じる"
+        aria-controls="mobile-menu"
+        aria-expanded={isMobileMenuOpen}
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsMobileMenuOpen(false);
+        }}
+      >
+        <span className="relative block h-5 w-5" aria-hidden="true">
+          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 rotate-45 bg-current" />
+          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 -rotate-45 bg-current" />
+        </span>
+      </button>
+    </div>
+
+    <nav
+      className="mt-24 flex flex-col gap-7 text-[18px] font-light tracking-[0.28em] text-white/88"
+      aria-label="スマートフォン用メニュー"
+      onClick={(event) => event.stopPropagation()}
+    >
+      {navLinks.map((link, index) => (
+        <a
+          key={link.href}
+          href={link.href}
+          className="group flex min-h-11 items-center justify-between border-b border-white/10 pb-5 transition-colors duration-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <span>{link.label}</span>
+          <span className="text-[11px] tracking-[0.18em] text-white/35 transition-colors duration-300 group-hover:text-white/65">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</div>
 
       <section className="relative h-screen min-h-[760px] overflow-hidden bg-black">
 <>
