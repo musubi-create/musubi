@@ -387,47 +387,6 @@ export default function Home() {
     </div>
   </Reveal>
 </section>
-<section id="workflow" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
-  <div className="mx-auto max-w-7xl">
-    <Reveal>
-      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
-        <div>
-          <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">
-            WORK FLOW
-          </p>
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.1em] md:text-[56px]">
-  営業成果までの流れ
-</h2>
-        </div>
-
-        <p className="ml-3 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
-          課題の整理から、ターゲット設計、実行、改善提案まで。
-          一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
-        </p>
-      </div>
-    </Reveal>
-
-    <div className="border-t border-black/10">
-      {workflow.map((item, index) => (
-        <Reveal key={item.number} delay={(index + 1) as 1 | 2 | 3}>
-          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start">
-  <p className="font-serif text-3xl tracking-[0.12em] text-neutral-300 transition-colors duration-700 group-hover:text-neutral-900">
-    {item.number}
-  </p>
-
-  <h3 className="text-2xl font-light tracking-[0.16em] text-neutral-900 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
-    {item.title}
-  </h3>
-
-  <p className="max-w-[620px] text-sm leading-[2.2] tracking-[0.1em] text-neutral-600 transition-colors duration-700 group-hover:text-neutral-800">
-    {item.text}
-  </p>
-</div>
-        </Reveal>
-      ))}
-    </div>
-  </div>
-</section>
 <section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <Reveal>
@@ -470,6 +429,47 @@ export default function Home() {
               {service.text}
             </p>
           </article>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>
+<section id="workflow" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
+  <div className="mx-auto max-w-7xl">
+    <Reveal>
+      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
+        <div>
+          <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">
+            WORK FLOW
+          </p>
+          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.1em] md:text-[56px]">
+  営業成果までの流れ
+</h2>
+        </div>
+
+        <p className="ml-3 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
+          課題の整理から、ターゲット設計、実行、改善提案まで。
+          一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
+        </p>
+      </div>
+    </Reveal>
+
+    <div className="border-t border-black/10">
+      {workflow.map((item, index) => (
+        <Reveal key={item.number} delay={(index + 1) as 1 | 2 | 3}>
+          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start">
+  <p className="font-serif text-3xl tracking-[0.12em] text-neutral-300 transition-colors duration-700 group-hover:text-neutral-900">
+    {item.number}
+  </p>
+
+  <h3 className="text-2xl font-light tracking-[0.16em] text-neutral-900 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
+    {item.title}
+  </h3>
+
+  <p className="max-w-[620px] text-sm leading-[2.2] tracking-[0.1em] text-neutral-600 transition-colors duration-700 group-hover:text-neutral-800">
+    {item.text}
+  </p>
+</div>
         </Reveal>
       ))}
     </div>
