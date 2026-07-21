@@ -333,14 +333,14 @@ export default function Home() {
         </div>
       </section>
 
-<section id="vision" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
+<section id="vision" className="bg-white px-8 py-24 md:px-14 md:py-48 lg:px-20">
   <Reveal>
     <div className="mx-auto max-w-7xl">
-      <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">OUR VISION</p>
+      <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">OUR VISION</p>
 
-      <div className="grid gap-24 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+      <div className="grid gap-20 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-24">
         <div>
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.04em] md:text-[64px]">
+          <h2 className="text-[38px] font-light leading-[1.38] tracking-[0.04em] md:text-[64px] md:leading-[1.45]">
   AIが効率を極めるほど、
   <br />
   最後に人を動かすのは
@@ -372,7 +372,7 @@ export default function Home() {
 </div>
         </div>
 
-        <div className="space-y-12 border-l border-black/10 pl-10">
+        <div className="space-y-10 border-l border-black/10 pl-10 md:space-y-12">
           {values.map((item) => (
             <div key={item.number} className="pt-3">
               <p className="font-serif text-2xl tracking-[0.12em] text-neutral-400">{item.number}</p>
@@ -387,16 +387,16 @@ export default function Home() {
     </div>
   </Reveal>
 </section>
-<section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-14 md:py-48 lg:px-20">
+<section id="services" className="bg-neutral-950 px-8 py-28 text-white md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <Reveal>
-      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
+      <div className="mb-20 grid gap-10 md:mb-24 md:grid-cols-[1fr_1fr] md:items-end">
         <div>
-          <p className="mb-12 text-xs tracking-[0.65em] text-white/55">
+          <p className="mb-10 text-xs tracking-[0.65em] text-white/55 md:mb-12">
             SERVICES
           </p>
 
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.12em] md:text-[56px]">
+          <h2 className="text-[38px] font-light leading-[1.35] tracking-[0.12em] md:text-[56px] md:leading-[1.45]">
             事業内容
           </h2>
         </div>
@@ -413,10 +413,10 @@ export default function Home() {
       </div>
     </Reveal>
 
-    <div className="mt-28 border-t border-white/15">
+    <div className="mt-20 border-t border-white/15 md:mt-28">
       {services.map((service, index) => (
         <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
-          <article id={`service-${service.id}`} className="scroll-mt-28 group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr]">
+          <article id={`service-${service.id}`} className="scroll-mt-28 group relative grid gap-8 border-b border-white/15 py-11 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr] md:py-14">
             <p className="font-serif text-4xl tracking-[0.12em] text-white/55 transition-colors duration-700 group-hover:text-white/85">
               {service.number}
             </p>
@@ -434,15 +434,15 @@ export default function Home() {
     </div>
   </div>
 </section>
-<section id="workflow" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
+<section id="workflow" className="bg-white px-8 py-24 md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <Reveal>
-      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
+      <div className="mb-20 grid gap-10 md:mb-24 md:grid-cols-[1fr_1fr] md:items-end">
         <div>
-          <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">
+          <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">
             WORK FLOW
           </p>
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.1em] md:text-[56px]">
+          <h2 className="text-[38px] font-light leading-[1.35] tracking-[0.1em] md:text-[56px] md:leading-[1.45]">
   営業成果までの流れ
 </h2>
         </div>
@@ -457,7 +457,7 @@ export default function Home() {
     <div className="border-t border-black/10">
       {workflow.map((item, index) => (
         <Reveal key={item.number} delay={(index + 1) as 1 | 2 | 3}>
-          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start">
+          <div className="group grid gap-8 border-b border-black/10 py-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start md:py-12">
   <p className="font-serif text-3xl tracking-[0.12em] text-neutral-300 transition-colors duration-700 group-hover:text-neutral-900">
     {item.number}
   </p>
@@ -475,24 +475,24 @@ export default function Home() {
     </div>
   </div>
 </section>
-      <section id="voice" className="bg-[#f7f6f3] px-8 py-32 text-neutral-950 md:px-14 md:py-44 lg:px-20">
+      <section id="voice" className="bg-[#f7f6f3] px-8 py-24 text-neutral-950 md:px-14 md:py-44 lg:px-20">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
+          <div className="mb-12 text-center md:mb-16">
             <p className="mb-5 text-xs font-semibold tracking-[0.45em] text-neutral-400">
               SUPPORT IMAGE
             </p>
-            <h2 className="text-[30px] font-light tracking-[0.1em] md:text-[42px]">
+            <h2 className="text-[27px] font-light leading-[1.45] tracking-[0.1em] md:text-[42px]">
               支援イメージ
             </h2>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3 md:gap-8">
             {supportImages.map((item) => (
               <article
                 key={item.number}
-                className="group relative min-h-[420px] rounded-2xl border border-black/10 bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] md:p-10"
+                className="group relative min-h-[360px] rounded-2xl border border-black/10 bg-white p-7 shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] md:min-h-[420px] md:p-10"
               >
-                <div className="mb-10 flex items-start justify-between">
+                <div className="mb-8 flex items-start justify-between md:mb-10">
                   <p className="text-[11px] font-semibold tracking-[0.35em] text-neutral-400">
                     IMAGE {item.number}
                   </p>
@@ -501,11 +501,11 @@ export default function Home() {
                   </p>
                 </div>
 
-                <h3 className="mb-8 text-[19px] font-light leading-[1.9] tracking-[0.04em] text-neutral-950">
+                <h3 className="mb-6 text-[19px] font-light leading-[1.8] tracking-[0.04em] text-neutral-950 md:mb-8 md:leading-[1.9]">
                   {item.title}
                 </h3>
 
-                <div className="space-y-5 border-t border-black/10 pt-6 text-sm leading-[2] tracking-[0.04em] text-neutral-600">
+                <div className="space-y-4 border-t border-black/10 pt-6 text-sm leading-[2] tracking-[0.04em] text-neutral-600 md:space-y-5">
                   <p>
                     <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
                       課題
@@ -530,13 +530,13 @@ export default function Home() {
           </div>
         </div>
       </section>
-<section id="company" className="bg-white px-8 py-32 md:px-14 md:py-48 lg:px-20">
+<section id="company" className="bg-white px-8 py-24 md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
-    <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">COMPANY</p>
+    <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">COMPANY</p>
 
-    <div className="grid gap-16 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+    <div className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-16">
       <div>
-        <h2 className="text-[34px] font-light leading-[1.6] tracking-[0.12em] md:text-[46px]">
+        <h2 className="text-[31px] font-light leading-[1.48] tracking-[0.12em] md:text-[46px] md:leading-[1.6]">
           会社概要
         </h2>
 <div className="mt-1">
@@ -563,7 +563,7 @@ export default function Home() {
         ].map(([label, value]) => (
           <div
   key={label}
-  className="group grid gap-3 border-b border-black/10 py-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[180px_1fr]"
+  className="group grid gap-3 border-b border-black/10 py-5 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[180px_1fr] md:py-6"
 >
   <p className="text-xs tracking-[0.22em] text-neutral-400 transition-colors duration-700 group-hover:text-neutral-600">
     {label}
@@ -579,25 +579,25 @@ export default function Home() {
   </div>
 </section>
 
-     <section id="contact" className="relative overflow-hidden bg-black px-8 py-28 text-white md:px-14 md:py-40 lg:px-20">
+     <section id="contact" className="relative overflow-hidden bg-black px-8 py-[88px] text-white md:px-14 md:py-40 lg:px-20">
   
-  <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+  <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-start md:gap-16">
     <div>
-      <p className="mb-8 text-xs font-semibold tracking-[0.55em] text-white/35">CONTACT</p>
+      <p className="mb-6 text-xs font-semibold tracking-[0.55em] text-white/35 md:mb-8">CONTACT</p>
 
-      <h2 className="text-[32px] font-light leading-[1.6] tracking-[0.08em] md:text-[44px]">
+      <h2 className="text-[29px] font-light leading-[1.5] tracking-[0.08em] md:text-[44px] md:leading-[1.6]">
         その一件の電話から、
         <br />
         商談を結ぶ。
       </h2>
 
-      <p className="mt-8 max-w-xl text-sm leading-[2.2] tracking-[0.06em] text-white/60">
+      <p className="mt-6 max-w-xl text-sm leading-[2.2] tracking-[0.06em] text-white/60 md:mt-8">
         貴社の営業課題に合わせて、最適な進め方をご提案します。
         <br />
         まずはお気軽にご相談ください。
       </p>
 
-      <div className="mt-12 space-y-5 text-sm tracking-[0.06em] text-white/70">
+      <div className="mt-9 space-y-4 text-sm tracking-[0.06em] text-white/70 md:mt-12 md:space-y-5">
 <a
   href="tel:05035910222"
   className="flex items-center gap-4 transition-colors duration-500 hover:text-white"
@@ -656,7 +656,7 @@ export default function Home() {
       </div>
     </div>
 
-    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={handleSubmit} noValidate>
+    <form className="bg-white p-7 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={handleSubmit} noValidate>
       <h3 className="text-2xl font-light tracking-[0.08em]">お問い合わせ</h3>
       <p className="mt-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-500">
         必要事項をご記入のうえ送信してください。
@@ -665,7 +665,7 @@ export default function Home() {
         <span className="font-semibold text-neutral-900">*</span> は必須項目です。送信先：biz@musubi-44.com
       </p>
 
-      <div className="mt-8 space-y-5">
+      <div className="mt-6 space-y-5 md:mt-8">
         <div>
           <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="company">
             会社名 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
