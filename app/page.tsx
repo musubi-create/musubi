@@ -539,13 +539,13 @@ export default function Home() {
         <h2 className="text-[31px] font-light leading-[1.48] tracking-[0.12em] md:text-[46px] md:leading-[1.6]">
           会社概要
         </h2>
-<div className="mt-1">
+<div className="mt-1 flex justify-center md:block">
   <Image
     src="/images/logo-1.2.svg"
     alt="株式会社 糸喜-MUSUBI"
     width={595}
     height={595}
-    className="ml-6 mt-5 w-[42vw] max-w-[180px] md:mt-10 md:w-[238px] md:max-w-none md:-translate-x-[19px]"
+    className="mx-auto mt-5 w-[42vw] max-w-[180px] md:ml-6 md:mr-0 md:mt-10 md:w-[238px] md:max-w-none md:-translate-x-[19px]"
   />
 </div>
       </div>
