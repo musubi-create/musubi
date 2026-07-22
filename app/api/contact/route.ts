@@ -157,9 +157,10 @@ async function sendSmtpMail({
       <dt>お問い合わせ内容</dt><dd>${escapeHtml(message).replace(/\n/g, "<br />")}</dd>
     </dl>
   `;
+  const fromAddress = to;
   const boundary = `musubi-${Date.now().toString(36)}`;
   const rawMessage = [
-    `From: ${encodeHeader("MUSUBI公式サイト")} <${user}>`,
+    `From: ${encodeHeader("MUSUBI公式サイト")} <${fromAddress}>`,
     `To: <${to}>`,
     `Reply-To: ${encodeHeader(name)} <${email}>`,
     `Subject: ${encodeHeader(subject)}`,
@@ -207,7 +208,7 @@ async function sendSmtpMail({
     smtpStage = "auth-password";
     await smtp.command(Buffer.from(pass).toString("base64"), 235);
     smtpStage = "mail-from";
-    await smtp.command(`MAIL FROM:<${user}>`, 250);
+    await smtp.command(`MAIL FROM:<${fromAddress}>`, 250);
     smtpStage = "rcpt-to";
     await smtp.command(`RCPT TO:<${to}>`, [250, 251]);
     smtpStage = "data";
