@@ -157,7 +157,7 @@ async function sendSmtpMail({
       <dt>お問い合わせ内容</dt><dd>${escapeHtml(message).replace(/\n/g, "<br />")}</dd>
     </dl>
   `;
-  const fromAddress = to;
+  const fromAddress = user;
   const boundary = `musubi-${Date.now().toString(36)}`;
   const rawMessage = [
     `From: ${encodeHeader("MUSUBI公式サイト")} <${fromAddress}>`,
