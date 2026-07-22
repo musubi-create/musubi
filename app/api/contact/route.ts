@@ -181,28 +181,46 @@ async function sendSmtpMail({
   ].join("\r\n");
 
   const secure = port === 465;
-  const smtp = await SmtpConnection.connect(host, port, secure);
+  const smtpClientName = "musubi-44.com";
+  let smtp: SmtpConnection | undefined;
+  let smtpStage = "connect";
 
   try {
+    smtp = await SmtpConnection.connect(host, port, secure);
+    smtpStage = "greeting";
     await smtp.read(220);
-    await smtp.command(`EHLO ${host}`, 250);
+    smtpStage = "ehlo";
+    await smtp.command(`EHLO ${smtpClientName}`, 250);
 
     if (!secure) {
+      smtpStage = "starttls";
       await smtp.command("STARTTLS", 220);
       await smtp.upgradeToTls(host);
-      await smtp.command(`EHLO ${host}`, 250);
+      smtpStage = "ehlo-after-starttls";
+      await smtp.command(`EHLO ${smtpClientName}`, 250);
     }
 
+    smtpStage = "auth-login";
     await smtp.command("AUTH LOGIN", 334);
+    smtpStage = "auth-user";
     await smtp.command(Buffer.from(user).toString("base64"), 334);
+    smtpStage = "auth-password";
     await smtp.command(Buffer.from(pass).toString("base64"), 235);
+    smtpStage = "mail-from";
     await smtp.command(`MAIL FROM:<${user}>`, 250);
+    smtpStage = "rcpt-to";
     await smtp.command(`RCPT TO:<${to}>`, [250, 251]);
+    smtpStage = "data";
     await smtp.command("DATA", 354);
+    smtpStage = "message-body";
     await smtp.command(`${dotStuff(rawMessage)}\r\n.`, 250);
+    smtpStage = "quit";
     await smtp.command("QUIT", 221).catch(() => undefined);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown SMTP error";
+    throw new Error(`SMTP stage "${smtpStage}" failed: ${message}`);
   } finally {
-    smtp.close();
+    smtp?.close();
   }
 }
 
@@ -244,7 +262,7 @@ export async function POST(request: Request) {
     await sendSmtpMail({ company, name, email, message });
     return Response.json({ message: "送信が完了しました。" });
   } catch (error) {
-    console.error(error);
+    console.error("Contact SMTP send failed:", error instanceof Error ? error.message : error);
     return Response.json(
       { message: "メール送信に失敗しました。時間をおいて再度お試しください。" },
       { status: 500 },
