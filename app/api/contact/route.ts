@@ -18,6 +18,18 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const getString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
 
+const normalizeSmtpAddress = (value: string) => {
+  const address = value.trim();
+  const hasUnsafeCharacter =
+    address.includes("\r") || address.includes("\n") || address.includes("<") || address.includes(">");
+
+  if (!emailPattern.test(address) || hasUnsafeCharacter) {
+    throw new Error("Invalid SMTP email address environment variable.");
+  }
+
+  return address;
+};
+
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, "&amp;")
@@ -127,15 +139,18 @@ async function sendSmtpMail({
   email: string;
   message: string;
 }) {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT);
-  const user = process.env.SMTP_USER;
+  const host = process.env.SMTP_HOST?.trim();
+  const port = Number(process.env.SMTP_PORT?.trim());
+  const rawUser = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const to = process.env.CONTACT_TO_EMAIL;
+  const rawTo = process.env.CONTACT_TO_EMAIL;
 
-  if (!host || !port || !user || !pass || !to) {
+  if (!host || !port || !rawUser || !pass || !rawTo) {
     throw new Error("SMTP environment variables are not configured.");
   }
+
+  const user = normalizeSmtpAddress(rawUser);
+  const to = normalizeSmtpAddress(rawTo);
 
   const subject = "MUSUBI公式サイトからのお問い合わせ";
   const textBody = [
