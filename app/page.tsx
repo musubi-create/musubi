@@ -1,11 +1,13 @@
 "use client";
 
+import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Reveal from "./components/Reveal";
 const navLinks = [
   { label: "ビジョン", href: "#vision" },
   { label: "サービス", href: "#services" },
-  { label: "お客様の声", href: "#voice" },
+  { label: "営業の流れ", href: "#workflow" },
+  { label: "支援イメージ", href: "#voice" },
   { label: "会社概要", href: "#company" },
   { label: "お問い合わせ", href: "#contact" },
 ];
@@ -13,16 +15,19 @@ const navLinks = [
 const services = [
   {
     number: "01",
+    id: "sales-support",
     title: "営業支援",
     text: "新規開拓から商談創出まで、事業成長に必要な営業活動を設計し、実行まで伴走します。",
   },
   {
     number: "02",
+    id: "inside-sales",
     title: "インサイドセールス",
     text: "顧客との最初の接点を丁寧に設計し、見込み顧客との関係構築を支援します。",
   },
   {
     number: "03",
+    id: "dx-saas",
     title: "DX・SaaS支援",
     text: "SaaSやデジタルツールの導入・活用を通じて、営業組織の生産性向上を支えます。",
   },
@@ -72,29 +77,176 @@ const workflow = [
   },
 ];
 
+const supportImages = [
+  {
+    number: "01",
+    title: "営業体制の立ち上げ",
+    challenge: "新規開拓の進め方や営業体制を整理したい",
+    support: "ターゲット設計、リスト作成、トーク設計から実行まで伴走",
+    goal: "検証と改善を継続できる営業体制へ",
+  },
+  {
+    number: "02",
+    title: "商談機会の創出",
+    challenge: "見込み顧客との新たな接点を増やしたい",
+    support: "商材理解と市場分析を踏まえ、最適なアプローチを設計・実行",
+    goal: "将来の商談につながる接点を着実に積み重ねる",
+  },
+  {
+    number: "03",
+    title: "インサイドセールス支援",
+    challenge: "社内の営業リソースやノウハウが不足している",
+    support: "架電、結果分析、改善提案まで一気通貫で支援",
+    goal: "再現性のある営業活動と改善サイクルを構築",
+  },
+];
+
+type FormValues = {
+  company: string;
+  name: string;
+  email: string;
+  message: string;
+  privacy: boolean;
+  website: string;
+};
+
+type FormErrors = Partial<Record<keyof FormValues, string>>;
+
+const initialFormValues: FormValues = {
+  company: "",
+  name: "",
+  email: "",
+  message: "",
+  privacy: false,
+  website: "",
+};
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const formMaxLengths = {
+  company: 100,
+  name: 80,
+  email: 254,
+  message: 2000,
+};
+
 export default function Home() {
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
+
+  const validateForm = (values: FormValues) => {
+    const errors: FormErrors = {};
+
+    if (!values.company.trim()) errors.company = "会社名を入力してください。";
+    else if (values.company.length > formMaxLengths.company) errors.company = "会社名の入力内容を確認してください。";
+    if (!values.name.trim()) errors.name = "お名前を入力してください。";
+    else if (values.name.length > formMaxLengths.name) errors.name = "お名前の入力内容を確認してください。";
+    if (!values.email.trim()) {
+      errors.email = "メールアドレスを入力してください。";
+    } else if (values.email.length > formMaxLengths.email || !emailPattern.test(values.email)) {
+      errors.email = "メールアドレスの形式を確認してください。";
+    }
+    if (!values.message.trim()) errors.message = "お問い合わせ内容を入力してください。";
+    else if (values.message.length > formMaxLengths.message) errors.message = "お問い合わせ内容は2000文字以内で入力してください。";
+    if (!values.privacy) errors.privacy = "個人情報の取扱いに同意してください。";
+
+    return errors;
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (formStatus === "submitting") return;
+
+    const errors = validateForm(formValues);
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      setFormStatus("idle");
+      return;
+    }
+
+    setFormStatus("submitting");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formValues),
+      });
+      const result = await response.json().catch(() => null) as { errors?: FormErrors } | null;
+
+      if (!response.ok) {
+        if (result?.errors) setFormErrors(result.errors);
+        setFormStatus("error");
+        return;
+      }
+
+      setFormStatus("success");
+    } catch {
+      setFormStatus("error");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white text-neutral-950">
-      <header className="fixed left-0 top-0 z-50 w-full border-b border-black/10 bg-white/55 text-neutral-950 backdrop-blur-md">
-<div className="flex h-20 w-full items-center justify-start px-6 md:justify-between md:px-[95px]">
+      <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/35 text-white backdrop-blur-xl transition-colors duration-500">
+<div className="relative mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-end md:px-14 lg:px-20">
 <a
   href="#"
-  className="block transition-opacity duration-500 hover:opacity-60"
+  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:absolute md:left-8 lg:left-10"
   aria-label="MUSUBI"
 >
-<img
+<Image
   src="/images/logo-2.2.svg"
   alt="MUSUBI"
-  className="h-16 w-auto md:h-33"
+  width={595}
+  height={595}
+  className="h-14 w-auto invert md:h-20"
 />
 </a>
 
-  <nav className="hidden items-center gap-10 text-[11px] font-semibold tracking-[0.22em] text-black md:flex">
+  <button
+    type="button"
+    className="ml-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/20 text-white transition-all duration-300 hover:border-white/45 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:hidden"
+    aria-label={isMobileMenuOpen ? "メニューを閉じる" : "メニューを開く"}
+    aria-controls="mobile-menu"
+    aria-expanded={isMobileMenuOpen}
+    onClick={() => setIsMobileMenuOpen((open) => !open)}
+  >
+    <span className="sr-only">メニュー</span>
+    <span className="flex w-5 flex-col gap-1.5" aria-hidden="true">
+      <span className={`h-px w-full bg-current transition-transform duration-300 ${isMobileMenuOpen ? "translate-y-[7px] rotate-45" : ""}`} />
+      <span className={`h-px w-full bg-current transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+      <span className={`h-px w-full bg-current transition-transform duration-300 ${isMobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+    </span>
+  </button>
+
+  <nav className="hidden items-center gap-6 text-[10px] lg:gap-8 lg:text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex">
     {navLinks.map((link) => (
       <a
         key={link.href}
         href={link.href}
-        className="transition-all duration-500 hover:text-black hover:opacity-70"
+        className="transition-all duration-500 hover:text-white hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
       >
         {link.label}
       </a>
@@ -103,7 +255,74 @@ export default function Home() {
 </div>
 </header>
 
-      <section className="relative h-screen min-h-[720px] overflow-hidden">
+<div
+  id="mobile-menu"
+  className={`fixed inset-0 z-[60] bg-black/95 text-white backdrop-blur-2xl transition-all duration-300 md:hidden ${
+    isMobileMenuOpen ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
+  }`}
+  role="dialog"
+  aria-modal="true"
+  aria-label="モバイルナビゲーション"
+  aria-hidden={!isMobileMenuOpen}
+  onClick={() => setIsMobileMenuOpen(false)}
+>
+  <div className={`flex min-h-screen flex-col px-6 py-5 transition-transform duration-300 ${isMobileMenuOpen ? "translate-y-0" : "translate-y-4"}`}>
+    <div className="flex h-11 items-center justify-between">
+      <a
+        href="#"
+        className="block mix-blend-difference transition-opacity duration-500 hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        aria-label="MUSUBI トップへ戻る"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        <Image
+          src="/images/logo-2.2.svg"
+          alt="MUSUBI"
+          width={595}
+          height={595}
+          className="h-14 w-auto invert"
+        />
+      </a>
+      <button
+        type="button"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white transition-all duration-300 hover:border-white/45 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        aria-label="メニューを閉じる"
+        aria-controls="mobile-menu"
+        aria-expanded={isMobileMenuOpen}
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsMobileMenuOpen(false);
+        }}
+      >
+        <span className="relative block h-5 w-5" aria-hidden="true">
+          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 rotate-45 bg-current" />
+          <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 -rotate-45 bg-current" />
+        </span>
+      </button>
+    </div>
+
+    <nav
+      className="mt-24 flex flex-col gap-7 text-[18px] font-light tracking-[0.28em] text-white/88"
+      aria-label="スマートフォン用メニュー"
+      onClick={(event) => event.stopPropagation()}
+    >
+      {navLinks.map((link, index) => (
+        <a
+          key={link.href}
+          href={link.href}
+          className="group flex min-h-11 items-center justify-between border-b border-white/10 pb-5 transition-colors duration-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <span>{link.label}</span>
+          <span className="text-[11px] tracking-[0.18em] text-white/35 transition-colors duration-300 group-hover:text-white/65">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</div>
+
+      <section className="relative h-screen min-h-[760px] overflow-hidden bg-black">
 <>
   {/* スマホ用 */}
   <Image
@@ -111,7 +330,7 @@ export default function Home() {
     alt="MUSUBI Hero"
     fill
     priority
-    className="block object-cover md:hidden"
+    className="block -translate-x-5 scale-[1.12] origin-[left_top] object-cover object-[left_top] md:hidden"
   />
 
   {/* PC・タブレット用 */}
@@ -120,33 +339,35 @@ export default function Home() {
     alt="MUSUBI Hero"
     fill
     priority
-    className="hidden object-cover object-center hero-slow-zoom md:block"
+    className="hidden object-cover object-center md:block"
   />
 </>
 <div className="pointer-events-none absolute inset-0 z-10 hidden items-center justify-center transition-all md:flex">
-  <img
+  <Image
   src="/images/logo-2.2.svg"
   alt=""
-  className="w-[58vw] max-w-[250px] opacity-18 transition-all duration-800 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[60vw] md:min-w-[600px] md:max-w-[850px] md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
+  width={595}
+  height={595}
+  className="w-[58vw] max-w-[250px] opacity-20 transition-all duration-700 drop-shadow-[0_0_36px_rgba(255,255,255,0.72)] md:w-[46vw] md:min-w-[420px] md:max-w-[660px] md:translate-x-3 md:opacity-30 md:drop-shadow-[0_0_60px_rgba(255,255,255,0.9)]"
 />
 </div>
         <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
-          <span className="text-[13px] font-semibold tracking-[0.45em] text-neutral-900 drop-shadow-[0_1px_8px_rgba(255,255,255,.9)]">
+          <span className="text-[13px] font-semibold tracking-[0.45em] text-white drop-shadow-[0_1px_8px_rgba(0,0,0,.65)] md:text-neutral-900 md:drop-shadow-[0_1px_8px_rgba(255,255,255,.9)]">
             SCROLL
           </span>
 
-          <div className="mt-4 h-16 w-px bg-gradient-to-b from-neutral-900 to-transparent" />
+          <div className="mt-4 h-16 w-px bg-gradient-to-b from-white to-transparent md:from-neutral-900" />
         </div>
       </section>
 
-<section id="vision" className="bg-white px-8 py-32 md:px-12 md:py-44">
+<section id="vision" className="bg-white px-8 py-24 md:px-14 md:py-48 lg:px-20">
   <Reveal>
     <div className="mx-auto max-w-7xl">
-      <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">OUR VISION</p>
+      <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">OUR VISION</p>
 
-      <div className="grid gap-24 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+      <div className="grid gap-20 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-24">
         <div>
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.04em] md:text-[64px]">
+          <h2 className="text-[38px] font-light leading-[1.38] tracking-[0.04em] md:text-[64px] md:leading-[1.45]">
   AIが効率を極めるほど、
   <br />
   最後に人を動かすのは
@@ -178,7 +399,7 @@ export default function Home() {
 </div>
         </div>
 
-        <div className="space-y-12 border-l border-black/10 pl-10">
+        <div className="space-y-10 border-l border-black/10 pl-10 md:space-y-12">
           {values.map((item) => (
             <div key={item.number} className="pt-3">
               <p className="font-serif text-2xl tracking-[0.12em] text-neutral-400">{item.number}</p>
@@ -193,20 +414,78 @@ export default function Home() {
     </div>
   </Reveal>
 </section>
-<section id="workflow" className="bg-white px-8 py-32 md:px-12 md:py-44">
+<section id="services" className="bg-neutral-950 px-8 py-28 text-white md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
     <Reveal>
-      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
+      <div className="mb-20 grid gap-10 md:mb-24 md:grid-cols-[1fr_1fr] md:items-end">
         <div>
-          <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">
+          <p className="mb-10 text-xs tracking-[0.65em] text-white/55 md:mb-12">
+            SERVICES
+          </p>
+
+          <h2 className="text-[38px] font-light leading-[1.35] tracking-[0.12em] md:text-[56px] md:leading-[1.45]">
+            事業内容
+          </h2>
+        </div>
+
+        <div className="flex items-end">
+          <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.035em] text-white/72 md:ml-9 md:tracking-[0.055em]">
+            AIを徹底活用したインサイドセールス支援。
+            架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
+            リスト作成・訴求設計・スクリプト作成・架電実行・
+            結果分析・改善提案までを一気通貫でサポートします。
+            効率と成果、その両方を追求する営業パートナーです。
+          </p>
+        </div>
+      </div>
+    </Reveal>
+
+    <div className="mt-20 border-t border-white/15 md:mt-28">
+      {services.map((service, index) => (
+        <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
+          <article id={`service-${service.id}`} className="scroll-mt-28 group relative grid gap-8 border-b border-white/15 py-11 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr] md:py-14">
+            <p className="font-serif text-4xl tracking-[0.12em] text-white/55 transition-colors duration-700 group-hover:text-white/85">
+              {service.number}
+            </p>
+
+            <h3 className="text-2xl font-light tracking-[0.16em] text-white transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
+              {service.title}
+            </h3>
+
+            <p className="max-w-[680px] text-sm leading-[2.2] tracking-[0.05em] text-white/72 transition-colors duration-700 group-hover:text-white/90">
+              {service.text}
+            </p>
+          </article>
+        </Reveal>
+      ))}
+    </div>
+  </div>
+</section>
+<section id="workflow" className="bg-white px-8 py-24 md:px-14 md:py-48 lg:px-20">
+  <div className="mx-auto max-w-7xl">
+    <Reveal>
+      <div className="mb-20 grid gap-10 md:mb-24 md:grid-cols-[1fr_1fr] md:items-end">
+        <div>
+          <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">
             WORK FLOW
           </p>
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.1em] md:text-[56px]">
-  営業成果までの流れ
+          <h2 className="text-[37px] font-light leading-[1.34] tracking-[0.07em] md:text-[56px] md:leading-[1.45] md:tracking-[0.1em]">
+  <span className="whitespace-nowrap">営業成果までの</span>
+  <br className="md:hidden" />
+  <span className="whitespace-nowrap">流れ</span>
 </h2>
         </div>
 
-        <p className="ml-3 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
+        <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.02em] text-neutral-600 md:hidden">
+          課題の整理から、ターゲット設計、実行、
+          <br />
+          改善提案まで。一つひとつの工程を
+          <br />
+          丁寧に設計し、成果につながる
+          <br />
+          営業活動へと整えます。
+        </p>
+        <p className="hidden max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600 md:ml-3 md:block">
           課題の整理から、ターゲット設計、実行、改善提案まで。
           一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
         </p>
@@ -216,7 +495,7 @@ export default function Home() {
     <div className="border-t border-black/10">
       {workflow.map((item, index) => (
         <Reveal key={item.number} delay={(index + 1) as 1 | 2 | 3}>
-          <div className="group grid gap-8 border-b border-black/10 py-12 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start">
+          <div className="group grid gap-8 border-b border-black/10 py-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[0.35fr_0.65fr_1fr] md:items-start md:py-12">
   <p className="font-serif text-3xl tracking-[0.12em] text-neutral-300 transition-colors duration-700 group-hover:text-neutral-900">
     {item.number}
   </p>
@@ -234,141 +513,77 @@ export default function Home() {
     </div>
   </div>
 </section>
-<section id="services" className="bg-neutral-950 px-8 py-36 text-white md:px-12 md:py-48">
-  <div className="mx-auto max-w-7xl">
-    <Reveal>
-      <div className="mb-24 grid gap-10 md:grid-cols-[1fr_1fr] md:items-end">
-        <div>
-          <p className="mb-12 text-xs tracking-[0.65em] text-white/35">
-            SERVICES
-          </p>
-
-          <h2 className="text-[42px] font-light leading-[1.45] tracking-[0.12em] md:text-[56px]">
-            事業内容
-          </h2>
-        </div>
-
-        <div className="flex items-end">
-          <p className="ml-9 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-white/58">
-            AIを徹底活用したインサイドセールス支援。
-            架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
-            リスト作成・訴求設計・スクリプト作成・架電実行・
-            結果分析・改善提案までを一気通貫でサポートします。
-            効率と成果、その両方を追求する営業パートナーです。
-          </p>
-        </div>
-      </div>
-    </Reveal>
-
-    <div className="mt-28 border-t border-white/15">
-      {services.map((service, index) => (
-        <Reveal key={service.number} delay={(index + 1) as 1 | 2 | 3}>
-          <article className="group relative grid gap-8 border-b border-white/15 py-14 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-white/35 md:grid-cols-[0.35fr_0.9fr_1.15fr]">
-            <p className="font-serif text-4xl tracking-[0.12em] text-white/30 transition-colors duration-700 group-hover:text-white/70">
-              {service.number}
-            </p>
-
-            <h3 className="text-2xl font-light tracking-[0.16em] text-white transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-2">
-              {service.title}
-            </h3>
-
-            <p className="max-w-[680px] text-sm leading-[2.2] tracking-[0.05em] text-white/55 transition-colors duration-700 group-hover:text-white/75">
-              {service.text}
-            </p>
-          </article>
-        </Reveal>
-      ))}
-    </div>
-  </div>
-</section>
-      <section id="voice" className="bg-[#f7f6f3] px-8 py-32 text-neutral-950 md:px-12">
+      <section id="voice" className="bg-[#f7f6f3] px-8 py-24 text-neutral-950 md:px-14 md:py-44 lg:px-20">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
+          <div className="mb-12 text-center md:mb-16">
             <p className="mb-5 text-xs font-semibold tracking-[0.45em] text-neutral-400">
-              VOICE / CASE
+              SUPPORT IMAGE
             </p>
-            <h2 className="text-[30px] font-light tracking-[0.1em] md:text-[42px]">
-              お客様の声・導入事例
+            <h2 className="text-[27px] font-light leading-[1.45] tracking-[0.1em] md:text-[42px]">
+              支援イメージ
             </h2>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {[
-              {
-                number: "01",
-                category: "SaaS・従業員50名",
-                result: "アポ獲得率 2.6倍",
-                title:
-                  "ターゲット再設計とトーク改善により、停滞していたアポ数を回復。",
-                comment:
-                  "数字だけでなく、断られた理由まで共有してくれるのが心強い。",
-              },
-              {
-                number: "02",
-                category: "人材・従業員200名",
-                result: "エンプラ商談 月8件",
-                title:
-                  "決裁者への直アプローチで、接点のなかった大手企業の商談を獲得。",
-                comment:
-                  "自社では届かなかった層に、丁寧に接点を作ってもらえた。",
-              },
-              {
-                number: "03",
-                category: "製造・従業員1,000名",
-                result: "稼働準備 2週間",
-                title:
-                  "IS組織がなくても、短期で安定したアポイント供給体制を構築。",
-                comment:
-                  "眠っていたリストから商談が生まれたのは驚きだった。",
-              },
-            ].map((item) => (
+          <div className="grid gap-6 md:grid-cols-3 md:gap-8">
+            {supportImages.map((item) => (
               <article
                 key={item.number}
-                className="group relative min-h-[420px] rounded-2xl border border-black/10 bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] md:p-10"
+                className="group relative min-h-[360px] rounded-2xl border border-black/10 bg-white p-7 shadow-[0_20px_60px_rgba(0,0,0,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.1)] md:min-h-[420px] md:p-10"
               >
-                <div className="mb-10 flex items-start justify-between">
+                <div className="mb-8 flex items-start justify-between md:mb-10">
                   <p className="text-[11px] font-semibold tracking-[0.35em] text-neutral-400">
-                    CASE {item.number}
+                    IMAGE {item.number}
                   </p>
                   <p className="text-[56px] font-light leading-none text-neutral-200 transition-colors duration-500 group-hover:text-neutral-800">
                     {item.number}
                   </p>
                 </div>
 
-                <p className="mb-4 text-xs tracking-[0.16em] text-neutral-400">
-                  {item.category}
-                </p>
-
-                <p className="mb-6 inline-block border-b border-black pb-2 text-sm font-semibold tracking-[0.12em] text-neutral-950">
-                  {item.result}
-                </p>
-
-                <h3 className="mb-8 text-[19px] font-light leading-[1.9] tracking-[0.04em] text-neutral-950">
+                <h3 className="mb-6 text-[19px] font-light leading-[1.8] tracking-[0.04em] text-neutral-950 md:mb-8 md:leading-[1.9]">
                   {item.title}
                 </h3>
 
-                <p className="border-t border-black/10 pt-6 text-sm leading-[2.2] tracking-[0.04em] text-neutral-500">
-                  「{item.comment}」
-                </p>
+                <div className="space-y-4 border-t border-black/10 pt-6 text-sm leading-[2] tracking-[0.04em] text-neutral-600 md:space-y-5">
+                  <p>
+                    <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+                      課題
+                    </span>
+                    {item.challenge}
+                  </p>
+                  <p>
+                    <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+                      支援内容
+                    </span>
+                    {item.support}
+                  </p>
+                  <p>
+                    <span className="mb-1 block text-[11px] font-semibold tracking-[0.18em] text-neutral-400">
+                      目指す状態
+                    </span>
+                    {item.goal}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
         </div>
       </section>
-<section id="company" className="bg-white px-8 py-32 md:px-12 md:py-44">
+<section id="company" className="bg-white px-8 py-24 md:px-14 md:py-48 lg:px-20">
   <div className="mx-auto max-w-7xl">
-    <p className="mb-12 text-xs tracking-[0.65em] text-neutral-400">COMPANY</p>
+    <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">COMPANY</p>
 
-    <div className="grid gap-16 md:grid-cols-[0.85fr_1.15fr] md:items-start">
+    <div className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:items-start md:gap-16">
       <div>
-        <h2 className="text-[34px] font-light leading-[1.6] tracking-[0.12em] md:text-[46px]">
+        <h2 className="text-[31px] font-light leading-[1.48] tracking-[0.12em] md:text-[46px] md:leading-[1.6]">
           会社概要
         </h2>
-<div className="mt-1">
-  <img
+<div className="mt-1 flex justify-center md:block">
+  <Image
     src="/images/logo-1.2.svg"
     alt="株式会社 糸喜-MUSUBI"
-    className="mx-auto mt-2 w-[72vw] max-w-[340px] md:mt-20 md:w-[420px] md:max-w-none"
+    width={595}
+    height={595}
+    className="mx-auto mt-5 w-[42vw] max-w-[180px] md:ml-6 md:mr-0 md:mt-10 md:w-[238px] md:max-w-none md:-translate-x-[19px]"
   />
 </div>
       </div>
@@ -386,7 +601,7 @@ export default function Home() {
         ].map(([label, value]) => (
           <div
   key={label}
-  className="group grid gap-3 border-b border-black/10 py-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[180px_1fr]"
+  className="group grid gap-3 border-b border-black/10 py-5 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-black/30 md:grid-cols-[180px_1fr] md:py-6"
 >
   <p className="text-xs tracking-[0.22em] text-neutral-400 transition-colors duration-700 group-hover:text-neutral-600">
     {label}
@@ -402,25 +617,25 @@ export default function Home() {
   </div>
 </section>
 
-     <section id="contact" className="relative overflow-hidden bg-black px-8 py-28 text-white md:px-12 md:py-36">
+     <section id="contact" className="relative overflow-hidden bg-black px-8 py-[88px] text-white md:px-14 md:py-40 lg:px-20">
   
-  <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-[0.9fr_1.1fr] md:items-start">
+  <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[0.9fr_1.1fr] md:items-start md:gap-16">
     <div>
-      <p className="mb-8 text-xs font-semibold tracking-[0.55em] text-white/35">CONTACT</p>
+      <p className="mb-6 text-xs font-semibold tracking-[0.55em] text-white/35 md:mb-8">CONTACT</p>
 
-      <h2 className="text-[32px] font-light leading-[1.6] tracking-[0.08em] md:text-[44px]">
+      <h2 className="text-[29px] font-light leading-[1.5] tracking-[0.08em] md:text-[44px] md:leading-[1.6]">
         その一件の電話から、
         <br />
         商談を結ぶ。
       </h2>
 
-      <p className="mt-8 max-w-xl text-sm leading-[2.2] tracking-[0.06em] text-white/60">
+      <p className="mt-6 max-w-xl text-sm leading-[2.2] tracking-[0.06em] text-white/60 md:mt-8">
         貴社の営業課題に合わせて、最適な進め方をご提案します。
         <br />
         まずはお気軽にご相談ください。
       </p>
 
-      <div className="mt-12 space-y-5 text-sm tracking-[0.06em] text-white/70">
+      <div className="mt-9 space-y-4 text-sm tracking-[0.06em] text-white/70 md:mt-12 md:space-y-5">
 <a
   href="tel:05035910222"
   className="flex items-center gap-4 transition-colors duration-500 hover:text-white"
@@ -452,8 +667,8 @@ export default function Home() {
 >
   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15">
     <svg
-      width="13"
-      height="13"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -479,38 +694,171 @@ export default function Home() {
       </div>
     </div>
 
-    <form className="bg-white p-8 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10">
+    <form className="bg-white p-7 text-black shadow-[0_30px_80px_rgba(0,0,0,0.25)] md:p-10" onSubmit={handleSubmit} noValidate>
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="website">Webサイト</label>
+        <input
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formValues.website}
+          onChange={(event) => setFormValues((values) => ({ ...values, website: event.target.value }))}
+        />
+      </div>
       <h3 className="text-2xl font-light tracking-[0.08em]">お問い合わせ</h3>
       <p className="mt-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-500">
         必要事項をご記入のうえ送信してください。
       </p>
+      <p className="mt-2 text-[11px] leading-[1.8] tracking-[0.05em] text-neutral-500">
+        <span className="font-semibold text-neutral-900">*</span> は必須項目です。送信先：biz@musubi-44.com
+      </p>
 
-      <div className="mt-8 space-y-5">
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          会社名
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="株式会社〇〇" />
-        </label>
+      <div className="mt-6 space-y-5 md:mt-8">
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="company">
+            会社名 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="company"
+            name="company"
+            value={formValues.company}
+            maxLength={formMaxLengths.company}
+            onChange={(event) => setFormValues((values) => ({ ...values, company: event.target.value }))}
+            className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="株式会社〇〇"
+            aria-invalid={Boolean(formErrors.company)}
+            aria-describedby={formErrors.company ? "company-error" : undefined}
+            required
+          />
+          {formErrors.company ? (
+            <p id="company-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.company}
+            </p>
+          ) : null}
+        </div>
 
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          お名前
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="山田 太郎" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="name">
+            お名前 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="name"
+            name="name"
+            value={formValues.name}
+            maxLength={formMaxLengths.name}
+            onChange={(event) => setFormValues((values) => ({ ...values, name: event.target.value }))}
+            className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="山田 太郎"
+            aria-invalid={Boolean(formErrors.name)}
+            aria-describedby={formErrors.name ? "name-error" : undefined}
+            required
+          />
+          {formErrors.name ? (
+            <p id="name-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.name}
+            </p>
+          ) : null}
+        </div>
 
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          メールアドレス
-          <input className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="taro@example.com" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="email">
+            メールアドレス <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formValues.email}
+            maxLength={formMaxLengths.email}
+            onChange={(event) => setFormValues((values) => ({ ...values, email: event.target.value }))}
+            className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="taro@example.com"
+            aria-invalid={Boolean(formErrors.email)}
+            aria-describedby={formErrors.email ? "email-error" : undefined}
+            required
+          />
+          {formErrors.email ? (
+            <p id="email-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.email}
+            </p>
+          ) : null}
+        </div>
 
-        <label className="block text-xs tracking-[0.08em] text-neutral-600">
-          お問い合わせ内容
-          <textarea className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none" placeholder="ご相談内容をご記入ください" />
-        </label>
+        <div>
+          <label className="block text-xs tracking-[0.08em] text-neutral-600" htmlFor="message">
+            お問い合わせ内容 <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formValues.message}
+            maxLength={formMaxLengths.message}
+            onChange={(event) => setFormValues((values) => ({ ...values, message: event.target.value }))}
+            className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
+            placeholder="ご相談内容をご記入ください"
+            aria-invalid={Boolean(formErrors.message)}
+            aria-describedby={formErrors.message ? "message-error" : undefined}
+            required
+          />
+          {formErrors.message ? (
+            <p id="message-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.message}
+            </p>
+          ) : null}
+        </div>
+
+        <div>
+          <label className="flex items-start gap-3 text-xs leading-[1.9] tracking-[0.06em] text-neutral-600" htmlFor="privacy">
+            <input
+              id="privacy"
+              name="privacy"
+              type="checkbox"
+              checked={formValues.privacy}
+              onChange={(event) => setFormValues((values) => ({ ...values, privacy: event.target.checked }))}
+              className="mt-1 h-4 w-4 border-black/20 accent-black"
+              aria-invalid={Boolean(formErrors.privacy)}
+              aria-describedby={formErrors.privacy ? "privacy-error" : undefined}
+              required
+            />
+            <span>
+              <a
+                href="/privacy"
+                className="underline underline-offset-4 transition-colors hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900"
+              >
+                個人情報の取扱い
+              </a>
+              に同意します <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+            </span>
+          </label>
+          {formErrors.privacy ? (
+            <p id="privacy-error" className="mt-2 text-xs leading-[1.7] text-red-700">
+              {formErrors.privacy}
+            </p>
+          ) : null}
+        </div>
+
+        <div aria-live="polite" role="status" className="min-h-10 text-xs leading-[1.8] tracking-[0.05em]">
+          {formStatus === "submitting" ? (
+            <p className="text-neutral-600">送信中です。完了までこのままお待ちください。</p>
+          ) : null}
+          {formStatus === "success" ? (
+            <p className="text-green-700">送信が完了しました。お問い合わせありがとうございます。</p>
+          ) : null}
+          {formStatus === "error" ? (
+            <p className="text-red-700">
+              メール送信に失敗しました。入力内容をご確認のうえ、時間をおいて再度お試しください。
+            </p>
+          ) : null}
+        </div>
 
         <button
   type="submit"
-  className="group mt-8 inline-flex items-center gap-3 bg-black px-8 py-4 text-[12px] font-semibold tracking-[0.18em] text-white transition-all duration-500 hover:-translate-y-1 hover:bg-neutral-800 hover:shadow-[0_18px_35px_rgba(0,0,0,0.25)]"
+  disabled={formStatus === "submitting"}
+  aria-disabled={formStatus === "submitting"}
+  className="group mt-4 inline-flex items-center gap-3 bg-black px-8 py-4 text-[12px] font-semibold tracking-[0.18em] text-white transition-all duration-500 hover:-translate-y-1 hover:bg-neutral-800 hover:shadow-[0_18px_35px_rgba(0,0,0,0.25)] disabled:cursor-not-allowed disabled:bg-neutral-400 disabled:hover:translate-y-0 disabled:hover:shadow-none"
 >
-  <span>送信する</span>
+  <span>{formStatus === "submitting" ? "送信中" : "送信する"}</span>
   <span className="relative inline-block h-[1px] w-6 bg-white transition-all duration-500 group-hover:w-8">
     <span className="absolute -right-[1px] -top-[3px] h-2 w-2 rotate-45 border-r border-t border-white" />
   </span>
@@ -519,41 +867,79 @@ export default function Home() {
     </form>
   </div>
 </section>
-<footer className="bg-black px-8 py-16 text-white md:px-12">
+<footer className="bg-black px-8 py-16 text-white md:px-14 lg:px-20">
   <div className="mx-auto grid max-w-7xl gap-12 border-b border-white/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
     <div>
-      <p className="text-xs font-semibold tracking-[0.6em] text-white/80">MUSUBI</p>
+      <a
+        href="#"
+        className="inline-block text-xs font-semibold tracking-[0.6em] text-white/80 transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        aria-label="ページ最上部へ戻る"
+      >
+        MUSUBI
+      </a>
       <div className="mt-5 max-w-xs text-xs leading-[2] tracking-[0.08em] text-white/50">
   <p>電話の先にいる「人」と向き合うインサイドセールス。</p>
   <p className="mt-2">人と人をむすび、商談につなぎます。</p>
 </div>
     </div>
 
-    <div>
+    <nav aria-label="サービス" className="text-xs tracking-[0.08em]">
       <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">SERVICE</p>
-      <ul className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
-        <li>テレアポ代行</li>
-        <li>インサイドセールス代行</li>
-        <li>リスト・スクリプト設計</li>
+      <ul className="mt-6 space-y-4 text-white/55">
+        {services.map((service) => (
+          <li key={service.id}>
+            <a
+              href={`#service-${service.id}`}
+              className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            >
+              {service.title}
+            </a>
+          </li>
+        ))}
       </ul>
-    </div>
+    </nav>
 
-    <div>
+    <nav aria-label="会社情報" className="text-xs tracking-[0.08em]">
       <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">COMPANY</p>
-      <ul className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
-        <li>ビジョン</li>
-        <li>お客様の声</li>
-        <li>会社概要</li>
+      <ul className="mt-6 space-y-4 text-white/55">
+        <li>
+          <a href="#vision" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            ビジョン
+          </a>
+        </li>
+        <li>
+          <a href="#workflow" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            営業の流れ
+          </a>
+        </li>
+        <li>
+          <a href="#voice" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            支援イメージ
+          </a>
+        </li>
+        <li>
+          <a href="#company" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            会社概要
+          </a>
+        </li>
       </ul>
-    </div>
+    </nav>
 
-    <div>
+    <nav aria-label="お問い合わせ" className="text-xs tracking-[0.08em]">
       <p className="text-[10px] font-semibold tracking-[0.35em] text-white/35">CONTACT</p>
-      <div className="mt-6 space-y-4 text-xs tracking-[0.08em] text-white/55">
-        <p>Tel : 050-3591-0222</p>
-        <p>Mail : biz@musubi-44.com</p>
-      </div>
-    </div>
+      <ul className="mt-6 space-y-4 text-white/55">
+        <li>
+          <a href="tel:05035910222" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            Tel : 050-3591-0222
+          </a>
+        </li>
+        <li>
+          <a href="mailto:biz@musubi-44.com" className="transition-colors duration-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            Mail : biz@musubi-44.com
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 
   <div className="mx-auto flex max-w-7xl flex-col gap-4 pt-8 text-[10px] tracking-[0.12em] text-white/35 md:flex-row md:items-center md:justify-between">
