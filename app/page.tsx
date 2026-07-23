@@ -122,6 +122,12 @@ const initialFormValues: FormValues = {
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const formMaxLengths = {
+  company: 100,
+  name: 80,
+  email: 254,
+  message: 2000,
+};
 
 export default function Home() {
   const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
@@ -151,13 +157,16 @@ export default function Home() {
     const errors: FormErrors = {};
 
     if (!values.company.trim()) errors.company = "会社名を入力してください。";
+    else if (values.company.length > formMaxLengths.company) errors.company = "会社名の入力内容を確認してください。";
     if (!values.name.trim()) errors.name = "お名前を入力してください。";
+    else if (values.name.length > formMaxLengths.name) errors.name = "お名前の入力内容を確認してください。";
     if (!values.email.trim()) {
       errors.email = "メールアドレスを入力してください。";
-    } else if (!emailPattern.test(values.email)) {
+    } else if (values.email.length > formMaxLengths.email || !emailPattern.test(values.email)) {
       errors.email = "メールアドレスの形式を確認してください。";
     }
     if (!values.message.trim()) errors.message = "お問い合わせ内容を入力してください。";
+    else if (values.message.length > formMaxLengths.message) errors.message = "お問い合わせ内容は2000文字以内で入力してください。";
     if (!values.privacy) errors.privacy = "個人情報の取扱いに同意してください。";
 
     return errors;
@@ -420,7 +429,7 @@ export default function Home() {
         </div>
 
         <div className="flex items-end">
-          <p className="ml-9 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-white/72">
+          <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.035em] text-white/72 md:ml-9 md:tracking-[0.055em]">
             AIを徹底活用したインサイドセールス支援。
             架電代行にとどまらず、商材理解・市場分析・ターゲット選定・
             リスト作成・訴求設計・スクリプト作成・架電実行・
@@ -460,12 +469,12 @@ export default function Home() {
           <p className="mb-10 text-xs tracking-[0.65em] text-neutral-400 md:mb-12">
             WORK FLOW
           </p>
-          <h2 className="text-[38px] font-light leading-[1.35] tracking-[0.1em] md:text-[56px] md:leading-[1.45]">
+          <h2 className="text-[37px] font-light leading-[1.34] tracking-[0.07em] md:text-[56px] md:leading-[1.45] md:tracking-[0.1em]">
   営業成果までの流れ
 </h2>
         </div>
 
-        <p className="ml-3 max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600">
+        <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.04em] text-neutral-600 md:ml-3 md:tracking-[0.055em]">
           課題の整理から、ターゲット設計、実行、改善提案まで。
           一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
         </p>
@@ -703,6 +712,7 @@ export default function Home() {
             id="company"
             name="company"
             value={formValues.company}
+            maxLength={formMaxLengths.company}
             onChange={(event) => setFormValues((values) => ({ ...values, company: event.target.value }))}
             className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
             placeholder="株式会社〇〇"
@@ -725,6 +735,7 @@ export default function Home() {
             id="name"
             name="name"
             value={formValues.name}
+            maxLength={formMaxLengths.name}
             onChange={(event) => setFormValues((values) => ({ ...values, name: event.target.value }))}
             className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
             placeholder="山田 太郎"
@@ -748,6 +759,7 @@ export default function Home() {
             name="email"
             type="email"
             value={formValues.email}
+            maxLength={formMaxLengths.email}
             onChange={(event) => setFormValues((values) => ({ ...values, email: event.target.value }))}
             className="mt-2 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
             placeholder="taro@example.com"
@@ -770,6 +782,7 @@ export default function Home() {
             id="message"
             name="message"
             value={formValues.message}
+            maxLength={formMaxLengths.message}
             onChange={(event) => setFormValues((values) => ({ ...values, message: event.target.value }))}
             className="mt-2 h-28 w-full border border-black/15 px-4 py-3 text-sm outline-none transition-colors focus:border-black aria-[invalid=true]:border-red-600"
             placeholder="ご相談内容をご記入ください"
@@ -798,7 +811,13 @@ export default function Home() {
               required
             />
             <span>
-              個人情報の取扱いに同意します <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
+              <a
+                href="/privacy"
+                className="underline underline-offset-4 transition-colors hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900"
+              >
+                個人情報の取扱い
+              </a>
+              に同意します <span className="font-semibold text-neutral-900" aria-hidden="true">*</span>
             </span>
           </label>
           {formErrors.privacy ? (

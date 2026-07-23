@@ -15,8 +15,34 @@ type ContactPayload = {
 type FieldErrors = Partial<Record<"company" | "name" | "email" | "message" | "privacy", string>>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const maxLengths = {
+  company: 100,
+  name: 80,
+  email: 254,
+  message: 2000,
+};
+const rateLimitWindowMs = 10 * 60 * 1000;
+const rateLimitMaxRequests = 3;
+const rateLimitStore = new Map<string, number[]>();
 
 const getString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
+const hasHeaderUnsafeCharacter = (value: string) => value.includes("\r") || value.includes("\n");
+
+const isRateLimited = (request: Request) => {
+  const forwardedFor = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const key = forwardedFor || request.headers.get("x-real-ip") || "unknown";
+  const now = Date.now();
+  const recentRequests = (rateLimitStore.get(key) ?? []).filter((timestamp) => now - timestamp < rateLimitWindowMs);
+
+  if (recentRequests.length >= rateLimitMaxRequests) {
+    rateLimitStore.set(key, recentRequests);
+    return true;
+  }
+
+  recentRequests.push(now);
+  rateLimitStore.set(key, recentRequests);
+  return false;
+};
 
 const normalizeSmtpAddress = (value: string) => {
   const address = value.trim();
@@ -253,6 +279,13 @@ export async function POST(request: Request) {
     return Response.json({ message: "送信を受け付けました。" });
   }
 
+  if (isRateLimited(request)) {
+    return Response.json(
+      { message: "送信回数が多いため、時間をおいて再度お試しください。" },
+      { status: 429 },
+    );
+  }
+
   const company = getString(payload.company);
   const name = getString(payload.name);
   const email = getString(payload.email);
@@ -260,14 +293,26 @@ export async function POST(request: Request) {
   const privacy = payload.privacy === true;
   const errors: FieldErrors = {};
 
-  if (!company) errors.company = "会社名を入力してください。";
-  if (!name) errors.name = "お名前を入力してください。";
+  if (!company) {
+    errors.company = "会社名を入力してください。";
+  } else if (company.length > maxLengths.company || hasHeaderUnsafeCharacter(company)) {
+    errors.company = "会社名の入力内容を確認してください。";
+  }
+  if (!name) {
+    errors.name = "お名前を入力してください。";
+  } else if (name.length > maxLengths.name || hasHeaderUnsafeCharacter(name)) {
+    errors.name = "お名前の入力内容を確認してください。";
+  }
   if (!email) {
     errors.email = "メールアドレスを入力してください。";
-  } else if (!emailPattern.test(email)) {
+  } else if (email.length > maxLengths.email || !emailPattern.test(email) || hasHeaderUnsafeCharacter(email)) {
     errors.email = "メールアドレスの形式を確認してください。";
   }
-  if (!message) errors.message = "お問い合わせ内容を入力してください。";
+  if (!message) {
+    errors.message = "お問い合わせ内容を入力してください。";
+  } else if (message.length > maxLengths.message) {
+    errors.message = "お問い合わせ内容は2000文字以内で入力してください。";
+  }
   if (!privacy) errors.privacy = "個人情報の取扱いに同意してください。";
 
   if (Object.keys(errors).length > 0) {
