@@ -470,7 +470,9 @@ export default function Home() {
             WORK FLOW
           </p>
           <h2 className="text-[37px] font-light leading-[1.34] tracking-[0.07em] md:text-[56px] md:leading-[1.45] md:tracking-[0.1em]">
-  営業成果までの流れ
+  <span className="whitespace-nowrap">営業成果までの</span>
+  <br className="md:hidden" />
+  <span className="whitespace-nowrap">流れ</span>
 </h2>
         </div>
 
