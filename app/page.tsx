@@ -476,7 +476,16 @@ export default function Home() {
 </h2>
         </div>
 
-        <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.02em] text-neutral-600 md:ml-3 md:tracking-[0.055em]">
+        <p className="max-w-[640px] text-sm leading-[2.35] tracking-[0.02em] text-neutral-600 md:hidden">
+          課題の整理から、ターゲット設計、実行、
+          <br />
+          改善提案まで。一つひとつの工程を
+          <br />
+          丁寧に設計し、成果につながる
+          <br />
+          営業活動へと整えます。
+        </p>
+        <p className="hidden max-w-[640px] text-sm leading-[2.35] tracking-[0.055em] text-neutral-600 md:ml-3 md:block">
           課題の整理から、ターゲット設計、実行、改善提案まで。
           一つひとつの工程を丁寧に設計し、成果につながる営業活動へと整えます。
         </p>
