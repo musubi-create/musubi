@@ -221,7 +221,7 @@ export default function Home() {
   alt="MUSUBI"
   width={595}
   height={595}
-  className="h-14 w-auto -translate-x-3 invert md:h-20 md:translate-x-0"
+  className="h-14 w-auto -translate-x-2 invert md:h-20 md:translate-x-0"
 />
 </a>
 
