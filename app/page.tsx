@@ -213,7 +213,7 @@ export default function Home() {
 <div className="relative mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-end md:px-14 lg:px-20">
 <a
   href="#"
-  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:fixed md:left-[5.65vw] md:top-2"
+  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:absolute md:left-8 lg:left-10"
   aria-label="MUSUBI"
 >
 <Image
@@ -221,7 +221,7 @@ export default function Home() {
   alt="MUSUBI"
   width={595}
   height={595}
-  className="h-14 w-auto -translate-x-4 invert md:h-20 md:-translate-x-[23.5px]"
+  className="h-14 w-auto -translate-x-4 invert md:h-20 md:translate-x-0"
 />
 </a>
 
