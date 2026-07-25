@@ -221,13 +221,13 @@ export default function Home() {
   alt="MUSUBI"
   width={595}
   height={595}
-  className="h-14 w-auto -translate-x-2 invert md:h-20 md:translate-x-0"
+  className="h-14 w-auto -translate-x-3 invert md:h-20 md:translate-x-0"
 />
 </a>
 
   <button
     type="button"
-    className="ml-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/20 text-white transition-all duration-300 hover:border-white/45 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:hidden"
+    className="ml-auto flex h-11 w-11 translate-x-1 items-center justify-center rounded-full border border-white/20 bg-black/20 text-white transition-all duration-300 hover:border-white/45 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:hidden"
     aria-label={isMobileMenuOpen ? "メニューを閉じる" : "メニューを開く"}
     aria-controls="mobile-menu"
     aria-expanded={isMobileMenuOpen}
