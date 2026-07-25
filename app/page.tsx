@@ -213,7 +213,7 @@ export default function Home() {
 <div className="relative mx-auto flex h-20 w-full max-w-[1440px] items-center justify-start px-6 md:h-24 md:justify-end md:px-14 lg:px-20">
 <a
   href="#"
-  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:fixed md:left-[calc(50vw-max(44.25vw,66.33vh)-23.5px)] md:top-2"
+  className="block transition-opacity duration-500 mix-blend-difference hover:opacity-60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:fixed md:left-[calc(50vw-max(41.75vw,62.59vh)-23.5px)] md:top-2"
   aria-label="MUSUBI"
 >
 <Image
@@ -241,7 +241,7 @@ export default function Home() {
     </span>
   </button>
 
-  <nav className="hidden items-center gap-6 text-[10px] lg:gap-8 lg:text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex">
+  <nav className="hidden items-center gap-6 text-[10px] lg:gap-8 lg:text-[11px] font-semibold tracking-[0.22em] text-white/85 md:flex md:translate-x-[1.2vw]">
     {navLinks.map((link) => (
       <a
         key={link.href}
