@@ -24,6 +24,11 @@ export default function Reveal({ children, delay }: RevealProps) {
     const element = ref.current;
     if (!element) return;
 
+    if (!("IntersectionObserver" in window)) {
+      const frame = requestAnimationFrame(() => setVisible(true));
+      return () => cancelAnimationFrame(frame);
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -31,7 +36,7 @@ export default function Reveal({ children, delay }: RevealProps) {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.18 }
+      { rootMargin: "0px 0px -12%", threshold: 0.12 }
     );
 
     observer.observe(element);
@@ -42,10 +47,8 @@ export default function Reveal({ children, delay }: RevealProps) {
   return (
     <div
       ref={ref}
-      className={`transform-gpu will-change-transform transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${delayClass}
-        visible
-  ? "translate-y-0 opacity-100 blur-0"
-  : "translate-y-8 opacity-0 blur-[2px]"
+      className={`transform-gpu will-change-transform transition-all duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${delayClass} ${
+        visible ? "translate-y-0 opacity-100 blur-0" : "translate-y-8 opacity-0 blur-[2px]"
       }`}
     >
       {children}
